@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://events.salute.community/sitemap.xml

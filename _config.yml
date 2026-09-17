@@ -1,0 +1,4 @@
+source: .
+destination: ./_site
+exclude: [README.md, backend]
+include: []
