@@ -12,7 +12,7 @@ const fmt=v=>v?new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year
 const clean=v=>(v===null||v===undefined||v==='')?'—':String(v);
 const escapeCsv=v=>'"'+clean(v).replaceAll('"','""')+'"';
 
-$('loginForm').addEventListener('submit',async e=>{e.preventDefault();authError.textContent='';const button=e.submitter;button.disabled=true;const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});button.disabled=false;if(error)authError.textContent='We could not sign you in. Check your email and password.'});
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();authError.textContent='';const button=e.submitter||e.currentTarget.querySelector('button[type="submit"]'),label=button.textContent;button.disabled=true;button.textContent='Signing in…';try{const {data,error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){authError.textContent='We could not sign you in. Check your email and password.';return}await initialize(data.session)}catch(_error){authError.textContent='The dashboard could not open. Please refresh and try again.'}finally{button.disabled=false;button.textContent=label}});
 $('signOut').addEventListener('click',()=>db.auth.signOut());
 $('eventSelect').addEventListener('change',loadResponses);
 $('search').addEventListener('input',render);

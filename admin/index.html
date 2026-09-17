@@ -56,6 +56,34 @@
           <tbody id="responseRows"></tbody>
         </table>
       </div>
+
+      <section class="invite-panel" aria-labelledby="inviteHeading">
+        <div class="invite-heading">
+          <div><p class="eyebrow">Invitation access</p><h2 id="inviteHeading">Approved RSVP emails</h2><p>Only guests on this private list can use the formal RSVP form. Everyone else can register their interest.</p></div>
+          <strong id="inviteCount" class="invite-count">0 approved</strong>
+        </div>
+        <div class="invite-entry-grid">
+          <form id="singleInviteForm" class="invite-form">
+            <h3>Add one guest</h3>
+            <label>Name <span>(optional)</span><input id="inviteName" type="text" maxlength="200" autocomplete="off"></label>
+            <label>Email<input id="inviteEmail" type="email" maxlength="320" autocomplete="off" required></label>
+            <button class="primary" type="submit">Add to invitation list</button>
+          </form>
+          <form id="bulkInviteForm" class="invite-form">
+            <h3>Add several emails</h3>
+            <label>Emails <span>(one per line or separated by commas)</span><textarea id="bulkInviteEmails" rows="5" maxlength="12000" required></textarea></label>
+            <button class="outline" type="submit">Add email list</button>
+          </form>
+        </div>
+        <p id="inviteMessage" class="invite-message" role="status"></p>
+        <div class="invite-list-head"><h3>Current invitation list</h3><input id="inviteSearch" type="search" placeholder="Search name or email" aria-label="Search invitation list"></div>
+        <div class="table-wrap invite-table-wrap">
+          <table class="invite-table">
+            <thead><tr><th>Guest</th><th>Added</th><th></th></tr></thead>
+            <tbody id="inviteRows"></tbody>
+          </table>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -68,6 +96,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./admin-v3.js"></script>
+  <script type="module" src="./admin-v4.js"></script>
 </body>
 </html>
