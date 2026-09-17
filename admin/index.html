@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <title>SALUTE Events — Administration</title>
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <main id="loginView" class="login-shell">
+    <section class="login-card">
+      <img src="../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo">
+      <p class="eyebrow">Events Administration</p>
+      <h1>Welcome back.</h1>
+      <p class="intro">Sign in to review responses and invitation requests across SALUTE events.</p>
+      <form id="loginForm">
+        <label>Email<input id="email" type="email" autocomplete="username" required value="neha@salute.community"></label>
+        <label>Password<input id="password" type="password" autocomplete="current-password" minlength="10" required></label>
+        <p id="authError" class="error" role="alert"></p>
+        <button class="primary" type="submit">Sign in</button>
+      </form>
+      <button id="setupAccess" class="link-button" type="button">First time here? Create your password</button>
+      <p class="fine">Access is limited to email addresses authorized by SALUTE.</p>
+    </section>
+  </main>
+
+  <main id="appView" class="app" hidden>
+    <header class="app-header">
+      <div><img src="../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo"><span>Events</span></div>
+      <div class="header-actions"><span id="userEmail"></span><button id="signOut" class="text-button">Sign out</button></div>
+    </header>
+
+    <section class="dashboard">
+      <div class="title-row">
+        <div><p class="eyebrow">Event responses</p><h1>Guest overview</h1></div>
+        <div class="toolbar"><select id="eventSelect" aria-label="Event"></select><button id="exportCsv" class="outline">Export CSV</button></div>
+      </div>
+
+      <div id="stats" class="stats" aria-label="Response totals"></div>
+
+      <div class="filters" role="group" aria-label="Filter responses">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="rsvp">RSVPs</button>
+        <button class="filter" data-filter="interest">Interest</button>
+        <button class="filter" data-filter="pending">Pending review</button>
+        <button class="filter" data-filter="approved">Approved</button>
+        <button class="filter" data-filter="declined">Declined</button>
+        <input id="search" type="search" placeholder="Search name, email, company" aria-label="Search responses">
+      </div>
+
+      <div id="statusMessage" class="status" role="status">Loading responses…</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Guest</th><th>Response</th><th>Company</th><th>Art purchase</th><th>Consult</th><th>Updated</th><th>Status</th><th></th></tr></thead>
+          <tbody id="responseRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="detailDialog">
+    <div class="dialog-head"><div><p class="eyebrow">Guest response</p><h2 id="detailName"></h2></div><button id="closeDetail" aria-label="Close">×</button></div>
+    <div id="detailBody" class="detail-body"></div>
+    <div id="reviewArea" class="review-area">
+      <label>Internal note<textarea id="reviewNote" rows="3" placeholder="Optional note for the SALUTE team"></textarea></label>
+      <div><button id="declineRequest" class="outline danger">Decline request</button><button id="approveRequest" class="primary">Approve request</button></div>
+    </div>
+  </dialog>
+
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>

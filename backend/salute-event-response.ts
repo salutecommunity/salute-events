@@ -6,6 +6,19 @@ const ALLOWED_ORIGINS = new Set([
   "https://events.salute.community",
 ]);
 const MAX_BODY_BYTES = 16 * 1024;
+const RELAY_API_KEY = (Deno.env.get("SSUITE_EMAIL_RELAY_API_KEY") ?? "").trim();
+const RELAY_URL = `${SUPABASE_URL}/functions/v1/ssuite-email-relay/send`;
+const PURCHASE_LABELS: Record<string, string> = {
+  actively_looking: "Yes, actively looking",
+  beginning_to_explore: "Yes, beginning to explore",
+  within_one_year: "Expecting to purchase within the next year",
+  not_at_this_time: "Not at this time",
+};
+const CONSULT_LABELS: Record<string, string> = {
+  yes: "Yes, interested",
+  maybe: "Maybe, please share more information",
+  no: "No, not at this time",
+};
 
 type Json = Record<string, unknown>;
 const db = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
@@ -61,6 +74,30 @@ async function readJson(request: Request): Promise<Json> {
   return parsed as Json;
 }
 
+async function triggerConfirmation(id: string, recipient: string, fullName: string, properties: Json): Promise<boolean> {
+  if (!RELAY_API_KEY) return false;
+  const names = fullName.trim().split(/\s+/);
+  const body = {
+    idempotency_key: id,
+    template_id: "SALUTE Event Response Confirmation",
+    template_version: 1,
+    from: { name: "S.Suite by SALUTE", email: "ssuite@salute.community" },
+    reply_to: "ssuite@salute.community",
+    to: { email: recipient, first_name: names[0] ?? null, last_name: names.length > 1 ? names.slice(1).join(" ") : null },
+    data: properties,
+  };
+  try {
+    const response = await fetch(RELAY_URL, {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${RELAY_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
 Deno.serve(async (request) => {
   const origin = request.headers.get("origin");
   if (request.method === "OPTIONS") {
@@ -91,7 +128,7 @@ Deno.serve(async (request) => {
 
     const { data: event, error: eventError } = await db
       .from("salute_event_pages")
-      .select("id,status")
+      .select("id,status,title,starts_at,timezone,venue_name,series_name")
       .eq("slug", slug)
       .maybeSingle();
     if (eventError || !event) return reply(origin, 404, { error: "This event is unavailable." });
@@ -155,10 +192,35 @@ Deno.serve(async (request) => {
       submission_count: prior ? Number(prior.submission_count) + 1 : 1,
       updated_at: new Date().toISOString(),
     };
-    const { error: saveError } = await db
+    const { data: saved, error: saveError } = await db
       .from("salute_event_responses")
-      .upsert(row, { onConflict: "event_id,response_type,normalized_email" });
-    if (saveError) throw saveError;
+      .upsert(row, { onConflict: "event_id,response_type,normalized_email" })
+      .select("id")
+      .single();
+    if (saveError || !saved) throw saveError ?? new Error("save_failed");
+
+    const confirmationAccepted = await triggerConfirmation(saved.id, contact.original, fullName, {
+      full_name: fullName,
+      event_series: event.series_name ?? "On the Table",
+      event_title: event.title,
+      event_date: "Wednesday, October 7, 2026",
+      event_time: "6:30 p.m. ET",
+      venue_name: event.venue_name ?? "FARZI NYC",
+      response_type: responseType,
+      response_summary: responseType === "rsvp" ? (rsvpStatus === "accept" ? "Attending" : "Unable to attend") : "Interest registered",
+      job_title: jobTitle,
+      company,
+      purchase_intent: PURCHASE_LABELS[purchaseIntent] ?? purchaseIntent,
+      consultation_interest: CONSULT_LABELS[consultationInterest] ?? consultationInterest,
+      dietary_restrictions: hasDietary === null ? "Not applicable" : hasDietary ? dietaryDetails ?? "Yes" : "No",
+      interest_note: interestNote ?? "Not provided",
+      event_url: "https://events.salute.community/livingwithart/",
+      submitted_at: new Date().toISOString(),
+    });
+    await db.from("salute_event_responses").update({
+      confirmation_status: confirmationAccepted ? "trigger_accepted" : "trigger_failed",
+      confirmation_triggered_at: confirmationAccepted ? new Date().toISOString() : null,
+    }).eq("id", saved.id);
 
     return reply(origin, 200, {
       accepted: true,
