@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>SALUTE Events — Administration</title>
-  <link rel="stylesheet" href="./admin-v2.css">
+  <link rel="stylesheet" href="./admin-v2.css?v=6">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -34,7 +34,7 @@
     <section class="dashboard">
       <div class="title-row">
         <div><p class="eyebrow">Event responses</p><h1>Guest overview</h1></div>
-        <div class="toolbar"><select id="eventSelect" aria-label="Event"></select><button id="exportCsv" class="outline">Export CSV</button></div>
+        <div class="toolbar"><select id="eventSelect" aria-label="Event"></select><button id="openManualRegistration" class="primary" type="button">Manually register guest</button><button id="exportCsv" class="outline">Export CSV</button></div>
       </div>
 
       <div id="stats" class="stats" aria-label="Response totals"></div>
@@ -88,6 +88,28 @@
     </section>
   </main>
 
+  <dialog id="manualRegistrationDialog">
+    <div class="dialog-head"><div><p class="eyebrow">Admin entry</p><h2>Manually register guest</h2></div><button id="closeManualRegistration" type="button" aria-label="Close">×</button></div>
+    <form id="manualRegistrationForm" class="manual-form">
+      <div class="manual-grid">
+        <label>First name<input id="manualFirstName" type="text" maxlength="100" autocomplete="off" required></label>
+        <label>Last name<input id="manualLastName" type="text" maxlength="100" autocomplete="off" required></label>
+        <label>Email<input id="manualEmail" type="email" maxlength="320" autocomplete="off" required></label>
+        <label>RSVP status<select id="manualRsvpStatus" required><option value="accept">Attending</option><option value="decline">Unable to attend</option></select></label>
+        <label>Title<input id="manualTitle" type="text" maxlength="200" autocomplete="off"></label>
+        <label>Company / organization<input id="manualCompany" type="text" maxlength="200" autocomplete="off"></label>
+        <label>Currently looking to purchase art?<select id="manualPurchase" required><option value="">Select one</option><option value="actively_looking">Yes, actively looking</option><option value="beginning_to_explore">Yes, beginning to explore</option><option value="within_one_year">Expecting to within the next year</option><option value="not_at_this_time">Not at this time</option></select></label>
+        <label>Complimentary coffee chat with Sadaf?<select id="manualConsult" required><option value="">Select one</option><option value="yes">Yes, interested</option><option value="maybe">Maybe, share more information</option><option value="no">No, not at this time</option></select></label>
+        <label id="manualDietaryQuestion">Dietary restrictions or allergies?<select id="manualHasDietary" required><option value="">Select one</option><option value="no">No</option><option value="yes">Yes</option></select></label>
+        <label id="manualDietaryDetails" hidden>Please share the details<textarea id="manualDietaryText" rows="3" maxlength="1000"></textarea></label>
+      </div>
+      <label class="check-label"><input id="manualSendConfirmation" type="checkbox" checked><span>Send the guest a confirmation email with these responses</span></label>
+      <p class="manual-note">This entry will be labeled “Manually registered.” It does not record the guest’s personal acceptance of SALUTE’s privacy, event, or media terms.</p>
+      <p id="manualMessage" class="invite-message" role="status"></p>
+      <div class="manual-actions"><button id="cancelManualRegistration" class="outline" type="button">Cancel</button><button class="primary" type="submit">Save registration</button></div>
+    </form>
+  </dialog>
+
   <dialog id="detailDialog">
     <div class="dialog-head"><div><p class="eyebrow">Guest response</p><h2 id="detailName"></h2></div><button id="closeDetail" aria-label="Close">×</button></div>
     <div id="detailBody" class="detail-body"></div>
@@ -97,6 +119,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./admin-v4.js?v=5"></script>
+  <script type="module" src="./admin-v4.js?v=6"></script>
 </body>
 </html>
