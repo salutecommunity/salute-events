@@ -41,7 +41,8 @@
 
       <div class="filters" role="group" aria-label="Filter responses">
         <button class="filter active" data-filter="all">All</button>
-        <button class="filter" data-filter="rsvp">RSVPs</button>
+        <button class="filter" data-filter="confirmed">Confirmed guests</button>
+        <button class="filter" data-filter="rsvp">RSVP responses</button>
         <button class="filter" data-filter="interest">Interest</button>
         <button class="filter" data-filter="pending">Pending review</button>
         <button class="filter" data-filter="approved">Approved</button>
@@ -65,14 +66,14 @@
         <div class="invite-entry-grid">
           <form id="singleInviteForm" class="invite-form">
             <h3>Add one guest</h3>
-            <label>Name <span>(optional)</span><input id="inviteName" type="text" maxlength="200" autocomplete="off"></label>
-            <label>Email<input id="inviteEmail" type="email" maxlength="320" autocomplete="off" required></label>
+            <div class="invite-name-row"><label>First name <span>(optional with email)</span><input id="inviteFirstName" type="text" maxlength="100" autocomplete="off"></label><label>Last name <span>(optional with email)</span><input id="inviteLastName" type="text" maxlength="100" autocomplete="off"></label></div>
+            <label>Email <span>(optional when first and last name are entered)</span><input id="inviteEmail" type="email" maxlength="320" autocomplete="off"></label>
             <button class="primary" type="submit">Add to invitation list</button>
           </form>
           <form id="bulkInviteForm" class="invite-form">
-            <h3>Add several emails</h3>
-            <label>Emails <span>(one per line or separated by commas)</span><textarea id="bulkInviteEmails" rows="5" maxlength="12000" required></textarea></label>
-            <button class="outline" type="submit">Add email list</button>
+            <h3>Add several guests</h3>
+            <label>Guest list <span>(one guest per line: email, full name, or full name + email)</span><textarea id="bulkInviteEmails" rows="5" maxlength="12000" placeholder="Asha Shah, asha@example.com&#10;Priya Mehta&#10;guest@example.com" required></textarea></label>
+            <button class="outline" type="submit">Add guest list</button>
           </form>
         </div>
         <p id="inviteMessage" class="invite-message" role="status"></p>
@@ -96,6 +97,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./admin-v4.js?v=3"></script>
+  <script type="module" src="./admin-v4.js?v=4"></script>
 </body>
 </html>
