@@ -26,6 +26,10 @@ footer{height:58px;display:flex;align-items:center;justify-content:space-between
 @media(max-width:560px){.site-head{height:58px}.notice{height:auto;min-height:34px;padding-top:8px;padding-bottom:8px}.shell{padding-left:6vw;padding-right:6vw}.hero-copy{padding:48px 6vw 36px;min-height:560px}.hero-meta{gap:30px}.hero h1{font-size:61px}.series{font-size:13px}.tagline{font-size:23px}.hero-dek{font-size:12px}.actions{flex-direction:column}.btn{width:100%}.hero-image{min-height:480px}.section{padding:68px 6vw}.hosts-intro p{font-size:16px}.host-grid{grid-template-columns:1fr}.host{border-right:0;padding:0 0 45px}.host+ .host{padding:45px 0 0;border-top:1px solid var(--line)}.host-photo{height:470px}.host h3{font-size:50px}.evening-copy{padding:60px 6vw}.course-list{padding:30px 6vw 55px}.course h3{font-size:25px}.venue-images{grid-template-columns:1fr;height:620px}.venue-img{height:310px}.location-lockup{font-size:68px}.venue-copy,.place-card{padding:40px 6vw}.place-card{align-items:flex-start}.about-left,.about-right{padding:60px 6vw}.about-left h2{font-size:57px}.closing-copy{padding:65px 6vw}.closing-copy h2{font-size:58px}.when{grid-template-columns:1fr;gap:20px}.closing-actions{padding:50px 6vw}.display{font-size:66px}footer{padding:0 6vw}.head-right{font-size:7px}}
 @media(hover:none){.host-photo img{filter:grayscale(0)}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Full-width editorial format chapter */
+.evening{display:block;margin:0;background:var(--ink);color:#fff}.evening-copy{min-height:0;padding:88px 7vw 52px;align-items:center;text-align:center}.evening-copy .lead{max-width:680px}.format-grid{display:grid;grid-template-columns:repeat(3,1fr);max-width:1400px;margin:0 auto;padding:0 4vw 92px}.format-step{min-height:270px;padding:35px 3vw 32px;border-top:1px solid rgba(255,255,255,.28);border-right:1px solid rgba(255,255,255,.28)}.format-step:first-child{border-left:1px solid rgba(255,255,255,.28)}.format-no{display:block;margin-bottom:54px;color:rgba(255,255,255,.55)}.format-step h3{font-family:var(--serif);font-size:clamp(29px,2.7vw,42px);line-height:1;font-weight:400;letter-spacing:-.035em;margin:0 0 20px}.format-step p{font-family:var(--serif);font-size:16px;line-height:1.5;color:rgba(255,255,255,.78);max-width:360px;margin:0}.venue-details{width:92%;margin:0 auto;box-shadow:none}.location-lockup{bottom:34px}.closing{margin-left:4vw;margin-right:4vw}
+@media(max-width:850px){.format-grid{grid-template-columns:1fr;padding:0 6vw 68px}.format-step{min-height:0;padding:30px 0;border-right:0;border-bottom:1px solid rgba(255,255,255,.28)}.format-step:first-child{border-left:0}.format-no{margin-bottom:24px}.format-step p{max-width:620px}.venue-details{width:100%}.closing{margin-left:0;margin-right:0}}
 </style>
 </head>
 <body>
@@ -44,10 +48,10 @@ footer{height:58px;display:flex;align-items:center;justify-content:space-between
 </div></section>
 
 <section class="evening" id="evening"><div class="evening-copy"><div class="section-label micro">03 / The format<br><br>How the evening unfolds</div><h2>The menu<br>is the <em>agenda.</em></h2><div class="lead">A dinner designed as a progression—from opening the conversation to creating connections that continue beyond the evening.</div></div>
-<div class="course-list">
-<article class="course open"><button aria-expanded="true"><span class="course-no">01</span><span><h3>Open the Table</h3><div class="course-sub">Move beyond introductions</div></span><span class="plus">+</span></button><div class="course-detail"><p>A set of conversation cards helps the table move beyond titles, familiar background questions, and the usual networking talk.</p></div></article>
-<article class="course"><button aria-expanded="false"><span class="course-no">02</span><span><h3>The Agenda</h3><div class="course-sub">Themed courses and conversation</div></span><span class="plus">+</span></button><div class="course-detail"><p>With each themed course, new prompts guide the conversation in a different direction and create space for genuine exchange.</p></div></article>
-<article class="course"><button aria-expanded="false"><span class="course-no">03</span><span><h3>Carry It Forward</h3><div class="course-sub">Give + Get</div></span><span class="plus">+</span></button><div class="course-detail"><p>The evening closes with Give + Get, where each guest shares something she can offer and something she would value as a starting point for connection beyond dinner.</p></div></article>
+<div class="format-grid">
+<article class="format-step"><span class="format-no micro">01 / Begin</span><h3>Open the Table</h3><p>A set of conversation cards helps the table move beyond titles, familiar background questions, and the usual networking talk.</p></article>
+<article class="format-step"><span class="format-no micro">02 / Over dinner</span><h3>The Agenda</h3><p>With each themed course, new prompts guide the conversation in a different direction and create space for genuine exchange.</p></article>
+<article class="format-step"><span class="format-no micro">03 / To close</span><h3>Carry It Forward</h3><p>The evening ends with Give + Get, where each guest shares something she can offer and something she would value—creating a natural starting point for connection beyond dinner.</p></article>
 </div></section>
 
 <section class="venue"><div class="venue-images"><div class="venue-img"><img src="./assets/tiya-food-table.jpg" alt="Contemporary Indian dishes at Tiya in San Francisco"><div class="location-lockup">TIYA.</div></div><div class="venue-img"><img src="./assets/tiya-chefs-bw.jpg" alt="A dish being finished at Tiya"></div></div>
@@ -59,7 +63,6 @@ footer{height:58px;display:flex;align-items:center;justify-content:space-between
 </main>
 <footer><span>SALUTE / On the Table · South Asian leadership starts with us</span><span>© 2026 SALUTE</span></footer>
 <script>
-document.querySelectorAll('.course button').forEach(b=>b.addEventListener('click',()=>{const c=b.closest('.course'),open=!c.classList.contains('open');document.querySelectorAll('.course').forEach(x=>{x.classList.remove('open');x.querySelector('button').setAttribute('aria-expanded','false')});if(open){c.classList.add('open');b.setAttribute('aria-expanded','true')}}));
 document.querySelectorAll('.bio-toggle').forEach(b=>b.addEventListener('click',()=>{const h=b.closest('.host'),open=!h.classList.contains('open');h.classList.toggle('open',open);b.setAttribute('aria-expanded',String(open))}));
 </script>
 </body></html>
