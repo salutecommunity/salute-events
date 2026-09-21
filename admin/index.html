@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>SALUTE Events — Administration</title>
-  <link rel="stylesheet" href="./admin-v2.css?v=6">
+  <link rel="stylesheet" href="./admin-v2.css?v=7">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -113,12 +113,13 @@
   <dialog id="detailDialog">
     <div class="dialog-head"><div><p class="eyebrow">Guest response</p><h2 id="detailName"></h2></div><button id="closeDetail" aria-label="Close">×</button></div>
     <div id="detailBody" class="detail-body"></div>
+    <div id="manualEmailArea" class="review-area" hidden><div><button id="resendManualConfirmation" class="outline" type="button">Resend confirmation email</button></div></div>
     <div id="reviewArea" class="review-area">
       <label>Internal note<textarea id="reviewNote" rows="3" placeholder="Optional note for the SALUTE team"></textarea></label>
       <div><button id="declineRequest" class="outline danger">Decline request</button><button id="approveRequest" class="primary">Approve request</button></div>
     </div>
   </dialog>
 
-  <script type="module" src="./admin-v4.js?v=6"></script>
+  <script type="module" src="./admin-v4.js?v=7"></script>
 </body>
 </html>
