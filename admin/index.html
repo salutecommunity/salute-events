@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>SALUTE Events — Administration</title>
-  <link rel="stylesheet" href="./admin-v2.css?v=8">
+  <link rel="stylesheet" href="./admin-v2.css?v=9">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -31,7 +31,12 @@
       <div class="header-actions"><span id="userEmail"></span><button id="signOut" class="text-button">Sign out</button></div>
     </header>
 
-    <section class="dashboard">
+    <nav class="admin-tabs" aria-label="Administration sections">
+      <button class="admin-tab active" type="button" data-view="events">Event responses</button>
+      <button class="admin-tab" type="button" data-view="art-interest">Future Interest — Art Experience</button>
+    </nav>
+
+    <section id="eventDashboard" class="dashboard">
       <div class="title-row">
         <div><p class="eyebrow">Event responses</p><h1>Guest overview</h1></div>
         <div class="toolbar"><select id="eventSelect" aria-label="Event"></select><button id="openManualRegistration" class="primary" type="button">Manually register guest</button><button id="exportCsv" class="outline">Export CSV</button></div>
@@ -86,7 +91,28 @@
         </div>
       </section>
     </section>
+
+    <section id="artInterestDashboard" class="dashboard" hidden>
+      <div class="title-row">
+        <div><p class="eyebrow">Future Interest</p><h1>Art Experience</h1></div>
+        <div class="toolbar"><button id="exportArtInterestCsv" class="outline" type="button">Export CSV</button></div>
+      </div>
+      <div id="artInterestStats" class="stats art-stats" aria-label="Art interest totals"></div>
+      <div class="filters art-filters"><input id="artInterestSearch" type="search" placeholder="Search name, email, company or city" aria-label="Search future art interest"></div>
+      <div id="artInterestStatus" class="status" role="status">Loading responses…</div>
+      <div class="table-wrap">
+        <table class="art-interest-table">
+          <thead><tr><th>Guest</th><th>Company</th><th>City</th><th>Relationship to art</th><th>Interested in</th><th>Updated</th><th></th></tr></thead>
+          <tbody id="artInterestRows"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
+
+  <dialog id="artInterestDialog">
+    <div class="dialog-head"><div><p class="eyebrow">Future Interest — Art Experience</p><h2 id="artInterestDetailName"></h2></div><button id="closeArtInterestDetail" aria-label="Close">×</button></div>
+    <div id="artInterestDetailBody" class="detail-body"></div>
+  </dialog>
 
   <dialog id="manualRegistrationDialog">
     <div class="dialog-head"><div><p class="eyebrow">Admin entry</p><h2>Manually register guest</h2></div><button id="closeManualRegistration" type="button" aria-label="Close">×</button></div>
@@ -120,6 +146,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./admin-v4.js?v=8"></script>
+  <script type="module" src="./admin-v4.js?v=9"></script>
 </body>
 </html>
