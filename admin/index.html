@@ -34,6 +34,7 @@
     <nav class="admin-tabs" aria-label="Administration sections">
       <button class="admin-tab active" type="button" data-view="events">Event responses</button>
       <button class="admin-tab" type="button" data-view="art-interest">Future Interest — Art Experience</button>
+      <button class="admin-tab" type="button" data-view="on-the-table">Future Interest — On the Table</button>
     </nav>
 
     <section id="eventDashboard" class="dashboard">
@@ -107,11 +108,32 @@
         </table>
       </div>
     </section>
+
+    <section id="onTableInterestDashboard" class="dashboard" hidden>
+      <div class="title-row">
+        <div><p class="eyebrow">Future Interest</p><h1>On the Table</h1></div>
+        <div class="toolbar"><button id="exportOnTableInterestCsv" class="outline" type="button">Export CSV</button></div>
+      </div>
+      <div id="onTableInterestStats" class="stats art-stats" aria-label="On the Table interest totals"></div>
+      <div class="filters art-filters"><input id="onTableInterestSearch" type="search" placeholder="Search name, email, company or city" aria-label="Search On the Table city interest"></div>
+      <div id="onTableInterestStatus" class="status" role="status">Loading responses…</div>
+      <div class="table-wrap">
+        <table class="art-interest-table">
+          <thead><tr><th>Guest</th><th>Company</th><th>City</th><th>Involvement</th><th>Updated</th><th></th></tr></thead>
+          <tbody id="onTableInterestRows"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <dialog id="artInterestDialog">
     <div class="dialog-head"><div><p class="eyebrow">Future Interest — Art Experience</p><h2 id="artInterestDetailName"></h2></div><button id="closeArtInterestDetail" aria-label="Close">×</button></div>
     <div id="artInterestDetailBody" class="detail-body"></div>
+  </dialog>
+
+  <dialog id="onTableInterestDialog">
+    <div class="dialog-head"><div><p class="eyebrow">Future Interest — On the Table</p><h2 id="onTableInterestDetailName"></h2></div><button id="closeOnTableInterestDetail" aria-label="Close">×</button></div>
+    <div id="onTableInterestDetailBody" class="detail-body"></div>
   </dialog>
 
   <dialog id="manualRegistrationDialog">
@@ -146,6 +168,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./admin-v4.js?v=9"></script>
+  <script type="module" src="./admin-v4.js?v=10"></script>
 </body>
 </html>
