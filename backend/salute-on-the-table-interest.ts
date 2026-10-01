@@ -2,6 +2,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const RELAY_API_KEY = (Deno.env.get("SSUITE_EMAIL_RELAY_API_KEY") ?? "").trim();
+const RELAY_URL = `${SUPABASE_URL}/functions/v1/ssuite-email-relay/send`;
 const ALLOWED_ORIGINS = new Set(["https://events.salute.community"]);
 const MAX_BODY_BYTES = 16 * 1024;
 const CITIES = new Set(["San Francisco", "Palo Alto", "Washington, D.C.", "Boston", "New York", "Chicago", "Atlanta", "Dallas", "Los Angeles"]);
@@ -35,6 +37,26 @@ function cleanLinkedIn(value: unknown) {
   return url.toString();
 }
 
+
+const AVAILABILITY_LABELS: Record<string, string> = {
+  can_attend_october_14: "I can attend on October 14",
+  future_interest: "I can’t attend on October 14, but I’m interested in a future dinner"
+};
+async function notificationId(recordId: string, kind: string, count: number): Promise<string> {
+  const bytes = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${recordId}:${kind}:${count}`))).slice(0, 16);
+  bytes[6] = (bytes[6] & 0x0f) | 0x50; bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+}
+async function triggerEmail(metric: string, id: string, recipient: string, first: string, last: string, data: Json): Promise<boolean> {
+  if (!RELAY_API_KEY) return false;
+  const payload = { idempotency_key: id, template_id: metric, template_version: 1,
+    from: { name: "S.Suite by SALUTE", email: "ssuite@salute.community" }, reply_to: "ssuite@salute.community",
+    to: { email: recipient, first_name: first, last_name: last }, data };
+  try { const r = await fetch(RELAY_URL, { method: "POST", headers: { Authorization: `Bearer ${RELAY_API_KEY}`, "Content-Type": "application/json" }, body: JSON.stringify(payload) }); return r.ok; }
+  catch { return false; }
+}
+
 Deno.serve(async (request) => {
   const origin = request.headers.get("origin");
   if (request.method === "OPTIONS") { if (!origin || !ALLOWED_ORIGINS.has(origin)) return reply(origin, 403, { error: "Request not allowed." }); return new Response(null, { status: 204, headers: responseHeaders(origin) }); }
@@ -57,8 +79,25 @@ Deno.serve(async (request) => {
     if (sourceEvent === "palo_alto_2026_10_14" && (!linkedIn || !availability || city !== "Palo Alto")) throw new Error("invalid");
     const { data: prior, error: priorError } = await db.from("salute_on_the_table_interests").select("id,updated_at,submission_count").eq("normalized_email", contact.normalized).maybeSingle();
     if (priorError) throw priorError; if (prior && Date.now() - new Date(prior.updated_at).getTime() < 10000) return reply(origin, 429, { error: "Please wait a moment before submitting again." });
-    const row = {first_name:firstName,last_name:lastName,email:contact.original,normalized_email:contact.normalized,city,job_title:jobTitle,company,linkedin_url:linkedIn,availability,source_event:sourceEvent,involvement,themes,consent_accepted:true,privacy_version:"salute-privacy-2026-09-02",user_agent:cleanText(request.headers.get("user-agent"),500,false),submission_count:prior?Number(prior.submission_count)+1:1,updated_at:new Date().toISOString()};
-    const { error: saveError } = await db.from("salute_on_the_table_interests").upsert(row, { onConflict: "normalized_email" }); if (saveError) throw saveError;
-    return reply(origin, 200, { accepted: true });
+    const row = {first_name:firstName,last_name:lastName,email:contact.original,normalized_email:contact.normalized,city,job_title:jobTitle,company,linkedin_url:linkedIn,availability,source_event:sourceEvent,involvement,themes,consent_accepted:true,privacy_version:"salute-privacy-2026-09-02",user_agent:cleanText(request.headers.get("user-agent"),500,false),submission_count:prior?Number(prior.submission_count)+1:1,confirmation_status:sourceEvent==="palo_alto_2026_10_14"?"pending":null,confirmation_triggered_at:null,admin_notification_status:sourceEvent==="palo_alto_2026_10_14"?"pending":null,admin_notification_triggered_at:null,updated_at:new Date().toISOString()};
+    const { data: saved, error: saveError } = await db.from("salute_on_the_table_interests").upsert(row, { onConflict: "normalized_email" }).select("id,submission_count").single(); if (saveError || !saved) throw saveError ?? new Error("save_failed");
+    let confirmationAccepted: boolean | null = null, helloAdminAccepted: boolean | null = null, sheelaAdminAccepted: boolean | null = null;
+    if (sourceEvent === "palo_alto_2026_10_14") {
+      const submittedAt = new Date().toISOString();
+      const messageData: Json = { event_title: "On the Table · Bay Area", event_date: "October 14, 2026", event_city: "Palo Alto", full_name: `${firstName} ${lastName}`, email: contact.original, job_title: jobTitle, company, linkedin_url: linkedIn ?? "", availability, availability_label: AVAILABILITY_LABELS[availability as string] ?? availability ?? "", submitted_at: submittedAt, source_event: sourceEvent };
+      const confirmationKey = await notificationId(saved.id, "ott_bay_area_confirmation", Number(saved.submission_count));
+      const helloAdminKey = await notificationId(saved.id, "ott_bay_area_admin_hello", Number(saved.submission_count));
+      const sheelaAdminKey = await notificationId(saved.id, "ott_bay_area_admin_sheela", Number(saved.submission_count));
+      [confirmationAccepted, helloAdminAccepted, sheelaAdminAccepted] = await Promise.all([
+        triggerEmail("SALUTE On the Table Interest Confirmation", confirmationKey, contact.original, firstName, lastName, messageData),
+        triggerEmail("SALUTE On the Table Admin Notification", helloAdminKey, "hello@salute.community", "SALUTE", "Team", messageData),
+        triggerEmail("SALUTE On the Table Admin Notification", sheelaAdminKey, "skrothapalli@gmail.com", "Sheela", "Krothapalli", messageData)
+      ]);
+      const adminAccepted = helloAdminAccepted && sheelaAdminAccepted;
+      const { error: statusError } = await db.from("salute_on_the_table_interests").update({ confirmation_status: confirmationAccepted ? "accepted" : "failed", confirmation_triggered_at: submittedAt, admin_notification_status: adminAccepted ? "accepted" : "failed", admin_notification_triggered_at: submittedAt }).eq("id", saved.id);
+      if (statusError) console.error("email status update failed", statusError.message);
+    }
+    const adminAccepted = helloAdminAccepted && sheelaAdminAccepted;
+    return reply(origin, 200, { accepted: true, email_status: sourceEvent === "palo_alto_2026_10_14" ? { confirmation: confirmationAccepted ? "accepted" : "failed", admin: adminAccepted ? "accepted" : "failed" } : "not_applicable" });
   } catch (error) { console.error("salute-on-the-table-interest failed", error instanceof Error ? `${error.message}\n${error.stack ?? ""}` : JSON.stringify(error)); return reply(origin, 400, { error: "Please check the form and try again." }); }
 });

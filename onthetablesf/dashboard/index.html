@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
+  <title>On the Table · Bay Area</title>
+  <link rel="stylesheet" href="./dashboard.css?v=1">
+</head>
+<body>
+  <main id="loginView" class="login-shell">
+    <section class="login-card">
+      <img src="../../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo">
+      <p class="eyebrow">Private guest dashboard</p>
+      <h1>On the Table<br>Bay Area</h1>
+      <p class="intro">Sign in to review interest submitted for the October 14 dinner in Palo Alto.</p>
+      <form id="loginForm">
+        <label>Email
+          <input id="email" type="email" autocomplete="email" required value="skrothapalli@gmail.com" readonly>
+        </label>
+        <button class="primary" type="submit">Email me a secure sign-in link</button>
+      </form>
+      <p id="authMessage" class="message" role="status"></p>
+      <p class="fine">Access is limited to this Bay Area interest list.</p>
+    </section>
+  </main>
+
+  <main id="appView" class="app" hidden>
+    <header class="app-header">
+      <div class="brand"><img src="../../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo"><span>On the Table</span></div>
+      <div class="account"><span id="userEmail"></span><button id="signOut" class="text-button" type="button">Sign out</button></div>
+    </header>
+
+    <section class="hero">
+      <div><p class="eyebrow">Bay Area · Palo Alto</p><h1>Guest interest</h1><p>October 14, 2026 · Restaurant to be announced</p></div>
+      <button id="exportCsv" class="outline" type="button">Export CSV</button>
+    </section>
+
+    <section id="stats" class="stats" aria-label="Interest totals"></section>
+
+    <section class="list-section">
+      <div class="list-head">
+        <div><p class="eyebrow">Responses</p><h2>Who has registered</h2></div>
+        <input id="search" type="search" placeholder="Search name, company or email" aria-label="Search registrations">
+      </div>
+      <p id="status" class="status" role="status">Loading registrations…</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Guest</th><th>Role</th><th>Availability</th><th>Submitted</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div id="cards" class="cards"></div>
+    </section>
+  </main>
+
+  <script type="module" src="./dashboard.js?v=1"></script>
+</body>
+</html>
