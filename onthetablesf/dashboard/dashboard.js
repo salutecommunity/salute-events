@@ -13,11 +13,12 @@ const esc=value=>String(value??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;'
 const safeLinkedIn=value=>{try{const u=new URL(value);return u.protocol==='https:'&&/(^|\.)linkedin\.com$/i.test(u.hostname)?u.href:null}catch{return null}};
 
 $('loginForm').addEventListener('submit',async event=>{
-  event.preventDefault();authMessage.textContent='Sending your secure link…';
-  const email=$('email').value.trim().toLowerCase();
+  event.preventDefault();authMessage.textContent='Signing in…';
+  const email=$('email').value.trim().toLowerCase(),password=$('password').value;
   if(email!==ALLOWED_EMAIL){authMessage.textContent='This dashboard is not enabled for that email address.';return}
-  const {error}=await db.auth.signInWithOtp({email,options:{emailRedirectTo:`${location.origin}/onthetablesf/dashboard/`,shouldCreateUser:true}});
-  authMessage.textContent=error?'We could not send the link. Please try again.':'Check your email for a secure sign-in link. The link will return you to this dashboard.';
+  const {data,error}=await db.auth.signInWithPassword({email,password});
+  if(error||data.user?.email?.toLowerCase()!==ALLOWED_EMAIL){authMessage.textContent='The email or password is incorrect.';return}
+  authMessage.textContent='';showApp(email);await loadRegistrations();
 });
 
 $('signOut').addEventListener('click',async()=>{await db.auth.signOut();showLogin()});
@@ -59,7 +60,7 @@ async function start(){
   const {data:{session}}=await db.auth.getSession();
   if(!session){showLogin();return}
   const email=session.user.email?.toLowerCase();
-  if(email!==ALLOWED_EMAIL){await db.auth.signOut();authMessage.textContent='This account does not have access to the Bay Area dashboard.';showLogin();return}
+  if(email!==ALLOWED_EMAIL){authMessage.textContent='A different SALUTE account is currently signed in. Please use a private browser window for Sheela’s dashboard.';showLogin();return}
   showApp(email);await loadRegistrations();
 }
 
