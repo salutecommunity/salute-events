@@ -31,7 +31,9 @@ function cleanEmail(value: unknown) {
   return { original, normalized };
 }
 function cleanLinkedIn(value: unknown) {
-  const text = cleanText(value, 500, false); if (!text) return null;
+  let text = cleanText(value, 500, false); if (!text) return null;
+  if (/^(?:www\.)?linkedin\.com\//i.test(text)) text = `https://${text}`;
+  if (/^\/in\//i.test(text)) text = `https://www.linkedin.com${text}`;
   let url: URL; try { url = new URL(text); } catch { throw new Error("invalid"); }
   if (url.protocol !== "https:" || !/(^|\.)linkedin\.com$/i.test(url.hostname)) throw new Error("invalid");
   return url.toString();
