@@ -5,7 +5,7 @@ const PUBLISHABLE_KEY='sb_publishable_qYWrm4tJE1n80lJx7PFoEw_WCkcV1ZL';
 const ALLOWED_EMAIL='skrothapalli@gmail.com';
 const db=createClient(SUPABASE_URL,PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id);
-const loginView=$('loginView'),appView=$('appView'),authMessage=$('authMessage'),rows=$('rows'),cards=$('cards'),status=$('status');
+const loginView=$('loginView'),changePasswordView=$('changePasswordView'),appView=$('appView'),authMessage=$('authMessage'),rows=$('rows'),cards=$('cards'),status=$('status');
 let registrations=[];
 const availabilityLabel=value=>value==='can_attend_october_14'?'Can attend October 14':'Interested in a future dinner';
 const fmt=value=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date(value));
@@ -18,15 +18,29 @@ $('loginForm').addEventListener('submit',async event=>{
   if(email!==ALLOWED_EMAIL){authMessage.textContent='This dashboard is not enabled for that email address.';return}
   const {data,error}=await db.auth.signInWithPassword({email,password});
   if(error||data.user?.email?.toLowerCase()!==ALLOWED_EMAIL){authMessage.textContent='The email or password is incorrect.';return}
-  authMessage.textContent='';showApp(email);await loadRegistrations();
+  authMessage.textContent='';
+  if(data.user.user_metadata?.must_change_password){showPasswordChange();return}
+  showApp(email);await loadRegistrations();
+});
+
+$('changePasswordForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const password=$('newPassword').value,confirm=$('confirmNewPassword').value,message=$('changePasswordMessage');
+  if(password!==confirm){message.textContent='The passwords do not match.';return}
+  if(password.length<12||!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/[0-9]/.test(password)||!/[^A-Za-z0-9]/.test(password)){message.textContent='Use at least 12 characters with uppercase, lowercase, a number and a symbol.';return}
+  message.textContent='Saving…';
+  const {data,error}=await db.auth.updateUser({password,data:{must_change_password:false,access_scope:'ott_bay_area'}});
+  if(error){message.textContent='The password could not be updated. Please try again.';return}
+  message.textContent='';showApp(data.user.email);await loadRegistrations();
 });
 
 $('signOut').addEventListener('click',async()=>{await db.auth.signOut();showLogin()});
 $('search').addEventListener('input',render);
 $('exportCsv').addEventListener('click',exportCsv);
 
-function showLogin(){loginView.hidden=false;appView.hidden=true}
-function showApp(email){loginView.hidden=true;appView.hidden=false;$('userEmail').textContent=email}
+function showLogin(){loginView.hidden=false;changePasswordView.hidden=true;appView.hidden=true}
+function showPasswordChange(){loginView.hidden=true;changePasswordView.hidden=false;appView.hidden=true}
+function showApp(email){loginView.hidden=true;changePasswordView.hidden=true;appView.hidden=false;$('userEmail').textContent=email}
 
 async function loadRegistrations(){
   status.textContent='Loading registrations…';
@@ -61,6 +75,7 @@ async function start(){
   if(!session){showLogin();return}
   const email=session.user.email?.toLowerCase();
   if(email!==ALLOWED_EMAIL){authMessage.textContent='A different SALUTE account is currently signed in. Please use a private browser window for Sheela’s dashboard.';showLogin();return}
+  if(session.user.user_metadata?.must_change_password){showPasswordChange();return}
   showApp(email);await loadRegistrations();
 }
 

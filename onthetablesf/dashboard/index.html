@@ -29,6 +29,22 @@
     </section>
   </main>
 
+  <main id="changePasswordView" class="login-shell" hidden>
+    <section class="login-card">
+      <img src="../../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo">
+      <p class="eyebrow">First sign-in</p>
+      <h1>Choose a new password</h1>
+      <p class="intro">For security, replace the temporary password before viewing the guest list.</p>
+      <form id="changePasswordForm">
+        <label>New password<input id="newPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+        <label class="password-label">Confirm password<input id="confirmNewPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+        <button class="primary" type="submit">Save and continue</button>
+      </form>
+      <p id="changePasswordMessage" class="message" role="status"></p>
+      <p class="fine">Use at least 12 characters with uppercase, lowercase, a number and a symbol.</p>
+    </section>
+  </main>
+
   <main id="appView" class="app" hidden>
     <header class="app-header">
       <div class="brand"><img src="../../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo"><span>On the Table</span></div>
