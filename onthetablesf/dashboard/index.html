@@ -51,8 +51,20 @@
       <div class="notice"><strong>Response status and seat confirmation are different.</strong> “Can attend” reflects an interest-form response; it does not by itself confirm a seat.</div>
       <div class="list-head">
         <div><p class="eyebrow">Roster + live responses</p><h2>Guests</h2></div>
-        <input id="search" type="search" placeholder="Search name, company or email" aria-label="Search guests">
+        <div class="list-actions"><input id="search" type="search" placeholder="Search name, company or email" aria-label="Search guests"><button id="showAddGuest" class="outline" type="button">Add person</button></div>
       </div>
+      <section id="addGuestPanel" class="add-panel" hidden>
+        <div class="add-panel-head"><div><p class="eyebrow">Add to roster</p><h3>New person</h3></div><button id="cancelAddGuest" class="text-button" type="button">Cancel</button></div>
+        <form id="addGuestForm" class="add-form">
+          <label>First name<input id="addFirstName" required></label>
+          <label>Last name<input id="addLastName" required></label>
+          <label>Email<input id="addEmail" type="email"></label>
+          <label>Role<input id="addRole"></label>
+          <label>Company<input id="addCompany"></label>
+          <label>RSVP status<select id="addRsvpStatus"><option value="not_invited">Not yet invited</option><option value="invited">Invited</option><option value="attending">Attending</option><option value="declined">Declined</option></select></label>
+          <div class="add-submit"><button class="primary" type="submit">Add person</button><p id="addGuestMessage" class="message" role="status"></p></div>
+        </form>
+      </section>
       <div class="filters" role="group" aria-label="Filter guests">
         <button class="filter active" data-filter="all" type="button">All</button>
         <button class="filter" data-filter="can_attend" type="button">Can attend</button>
@@ -62,7 +74,7 @@
       <p id="status" class="status" role="status">Loading guests…</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Guest</th><th>Role</th><th>Form response</th><th>Seat status</th><th>Source</th></tr></thead>
+          <thead><tr><th>Guest</th><th>Role</th><th>Interest-form response</th><th>RSVP status</th><th>Source</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
