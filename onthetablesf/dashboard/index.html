@@ -5,43 +5,27 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
-  <title>On the Table · Bay Area</title>
-  <link rel="stylesheet" href="./dashboard.css?v=3">
+  <title>On the Table · Bay Area Dashboard</title>
+  <link rel="stylesheet" href="./dashboard.css?v=4">
 </head>
 <body>
   <main id="loginView" class="login-shell">
     <section class="login-card">
       <img src="../../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo">
-      <p class="eyebrow">Private guest dashboard</p>
+      <p class="eyebrow">Private event dashboard</p>
       <h1>On the Table<br>Bay Area</h1>
-      <p class="intro">Sign in to review interest submitted for the October 14 dinner in Palo Alto.</p>
+      <p class="intro">Enter your approved email address and access code to review the October 14 guest roster and interest responses.</p>
       <form id="loginForm">
         <label>Email
-          <input id="email" type="email" autocomplete="username" required value="skrothapalli@gmail.com" readonly>
+          <input id="email" type="email" autocomplete="username" required placeholder="you@example.com">
         </label>
-        <label class="password-label">Password
-          <input id="password" type="password" autocomplete="current-password" minlength="12" required>
+        <label class="code-label">Access code
+          <input id="accessCode" type="password" autocomplete="current-password" minlength="12" required>
         </label>
-        <button class="primary" type="submit">Sign in</button>
+        <button class="primary" type="submit">Open dashboard</button>
       </form>
       <p id="authMessage" class="message" role="status"></p>
-      <p class="fine">Access is limited to this Bay Area interest list.</p>
-    </section>
-  </main>
-
-  <main id="changePasswordView" class="login-shell" hidden>
-    <section class="login-card">
-      <img src="../../livingwithart/assets/salute-logo.png" alt="SALUTE" class="logo">
-      <p class="eyebrow">First sign-in</p>
-      <h1>Choose a new password</h1>
-      <p class="intro">For security, replace the temporary password before viewing the guest list.</p>
-      <form id="changePasswordForm">
-        <label>New password<input id="newPassword" type="password" autocomplete="new-password" minlength="12" required></label>
-        <label class="password-label">Confirm password<input id="confirmNewPassword" type="password" autocomplete="new-password" minlength="12" required></label>
-        <button class="primary" type="submit">Save and continue</button>
-      </form>
-      <p id="changePasswordMessage" class="message" role="status"></p>
-      <p class="fine">Use at least 12 characters with uppercase, lowercase, a number and a symbol.</p>
+      <p class="fine">Access is limited to approved viewers and only includes the Bay Area event.</p>
     </section>
   </main>
 
@@ -52,21 +36,33 @@
     </header>
 
     <section class="hero">
-      <div><p class="eyebrow">Bay Area · Palo Alto</p><h1>Guest interest</h1><p>October 14, 2026 · Restaurant to be announced</p></div>
-      <button id="exportCsv" class="outline" type="button">Export CSV</button>
+      <div>
+        <p class="eyebrow">Bay Area · Menlo Park</p>
+        <h1>Guest dashboard</h1>
+        <p>Wednesday, October 14, 2026 · 6:00–8:30 PM PT</p>
+        <p>Eylan · 500 El Camino Real, Menlo Park, CA 94025</p>
+      </div>
+      <button id="exportCsv" class="outline" type="button">Export current view</button>
     </section>
 
-    <section id="stats" class="stats" aria-label="Interest totals"></section>
+    <section id="stats" class="stats" aria-label="Guest totals"></section>
 
     <section class="list-section">
+      <div class="notice"><strong>Response status and seat confirmation are different.</strong> “Can attend” reflects an interest-form response; it does not by itself confirm a seat.</div>
       <div class="list-head">
-        <div><p class="eyebrow">Responses</p><h2>Who has registered</h2></div>
-        <input id="search" type="search" placeholder="Search name, company or email" aria-label="Search registrations">
+        <div><p class="eyebrow">Roster + live responses</p><h2>Guests</h2></div>
+        <input id="search" type="search" placeholder="Search name, company or email" aria-label="Search guests">
       </div>
-      <p id="status" class="status" role="status">Loading registrations…</p>
+      <div class="filters" role="group" aria-label="Filter guests">
+        <button class="filter active" data-filter="all" type="button">All</button>
+        <button class="filter" data-filter="can_attend" type="button">Can attend</button>
+        <button class="filter" data-filter="future" type="button">Future interest</button>
+        <button class="filter" data-filter="no_response" type="button">No form response</button>
+      </div>
+      <p id="status" class="status" role="status">Loading guests…</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Guest</th><th>Role</th><th>Availability</th><th>Submitted</th></tr></thead>
+          <thead><tr><th>Guest</th><th>Role</th><th>Form response</th><th>Seat status</th><th>Source</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -74,6 +70,6 @@
     </section>
   </main>
 
-  <script type="module" src="./dashboard.js?v=3"></script>
+  <script type="module" src="./dashboard.js?v=4"></script>
 </body>
 </html>
