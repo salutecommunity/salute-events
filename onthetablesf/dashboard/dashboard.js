@@ -14,8 +14,8 @@ const norm=value=>String(value??'').trim().toLowerCase();
 const normName=(first,last)=>`${norm(first)} ${norm(last)}`.replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim();
 const responseLabel=value=>value==='can_attend_october_14'?'Can attend October 14':value==='future_interest'?'Interested in a future dinner':'No form response';
 const responseClass=value=>value==='can_attend_october_14'?'attend':value==='future_interest'?'future':'none';
-const rsvpLabel=value=>({invited:'Invited',attending:'Attending',future_interest:'Future interest',declined:'Declined'}[value]||'Invited');
-const rsvpOptions=value=>['invited','attending','future_interest','declined'].map(option=>`<option value="${option}"${option===value?' selected':''}>${rsvpLabel(option)}</option>`).join('');
+const rsvpLabel=value=>({invited:'Invited',attending:'Attending',tentative:'Tentative',future_interest:'Future interest',declined:'Declined'}[value]||'Invited');
+const rsvpOptions=value=>['invited','attending','tentative','future_interest','declined'].map(option=>`<option value="${option}"${option===value?' selected':''}>${rsvpLabel(option)}</option>`).join('');
 const safeLinkedIn=value=>{try{const u=new URL(value);return u.protocol==='https:'&&/(^|\.)linkedin\.com$/i.test(u.hostname)?u.href:null}catch{return null}};
 
 $('loginForm').addEventListener('submit',async event=>{
@@ -75,14 +75,15 @@ function mergePeople(roster,responses){
     if(used.has(response))continue;
     merged.push({roster_id:null,first_name:response.first_name,last_name:response.last_name,email:response.email||'',role:response.job_title||'',company:response.company||'',linkedin_url:response.linkedin_url||'',salute_relationship:'',availability:response.availability||'',submitted_at:response.updated_at||'',rsvp_status:response.availability==='can_attend_october_14'?'attending':'future_interest',on_roster:false,from_form:true,display_order:1000+merged.length,identity_note:''});
   }
-  return merged.sort((a,b)=>a.display_order-b.display_order||`${a.last_name} ${a.first_name}`.localeCompare(`${b.last_name} ${b.first_name}`));
+  return merged.sort((a,b)=>`${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`,undefined,{sensitivity:'base'}));
 }
 
 function renderStats(){
   const invited=people.filter(item=>item.rsvp_status==='invited').length;
   const attending=people.filter(item=>item.rsvp_status==='attending').length;
+  const tentative=people.filter(item=>item.rsvp_status==='tentative').length;
   const future=people.filter(item=>item.rsvp_status==='future_interest').length;
-  $('stats').innerHTML=`<div class="stat"><strong>${invited}</strong><span>Invited</span></div><div class="stat"><strong>${attending}</strong><span>Attending</span></div><div class="stat"><strong>${future}</strong><span>Future interest</span></div>`;
+  $('stats').innerHTML=`<div class="stat"><strong>${invited}</strong><span>Invited</span></div><div class="stat"><strong>${attending}</strong><span>Attending</span></div><div class="stat"><strong>${tentative}</strong><span>Tentative</span></div><div class="stat"><strong>${future}</strong><span>Future interest</span></div>`;
 }
 
 function filtered(){

@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>On the Table · Bay Area Dashboard</title>
-  <link rel="stylesheet" href="./dashboard.css?v=9">
+  <link rel="stylesheet" href="./dashboard.css?v=10">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -60,7 +60,7 @@
           <label>Email<input id="addEmail" type="email"></label>
           <label>Role<input id="addRole"></label>
           <label>Company<input id="addCompany"></label>
-          <label>RSVP status<select id="addRsvpStatus"><option value="invited">Invited</option><option value="attending">Attending</option><option value="future_interest">Future interest</option><option value="declined">Declined</option></select></label>
+          <label>RSVP status<select id="addRsvpStatus"><option value="invited">Invited</option><option value="attending">Attending</option><option value="tentative">Tentative</option><option value="future_interest">Future interest</option><option value="declined">Declined</option></select></label>
           <div class="add-submit"><button class="primary" type="submit">Add person</button><p id="addGuestMessage" class="message" role="status"></p></div>
         </form>
       </section>
@@ -68,6 +68,7 @@
         <button class="filter active" data-filter="all" type="button">All</button>
         <button class="filter" data-filter="invited" type="button">Invited</button>
         <button class="filter" data-filter="attending" type="button">Attending</button>
+        <button class="filter" data-filter="tentative" type="button">Tentative</button>
         <button class="filter" data-filter="future_interest" type="button">Future interest</button>
         <button class="filter" data-filter="declined" type="button">Declined</button>
       </div>
@@ -82,6 +83,6 @@
     </section>
   </main>
 
-  <script type="module" src="./dashboard.js?v=9"></script>
+  <script type="module" src="./dashboard.js?v=10"></script>
 </body>
 </html>
