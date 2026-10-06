@@ -83,7 +83,7 @@ function renderStats(roster,responses){
   const attending=roster.filter(item=>item.rsvp_status==='attending').length;
   const invited=roster.filter(item=>item.rsvp_status==='invited').length;
   const declined=roster.filter(item=>item.rsvp_status==='declined').length;
-  $('stats').innerHTML=`<div class="stat"><strong>${roster.length}</strong><span>Planning roster</span></div><div class="stat"><strong>${responses.length}</strong><span>Form responses</span></div><div class="stat"><strong>${canAttend}</strong><span>Can attend</span></div><div class="stat"><strong>${invited}</strong><span>Invited</span></div><div class="stat"><strong>${attending}</strong><span>Attending</span></div><div class="stat"><strong>${declined}</strong><span>Declined</span></div>`;
+  $('stats').innerHTML=`<div class="stat"><strong>${roster.length}</strong><span>Guest list</span></div><div class="stat"><strong>${responses.length}</strong><span>Form responses</span></div><div class="stat"><strong>${canAttend}</strong><span>Can attend</span></div><div class="stat"><strong>${invited}</strong><span>Invited</span></div><div class="stat"><strong>${attending}</strong><span>Attending</span></div><div class="stat"><strong>${declined}</strong><span>Declined</span></div>`;
 }
 
 function filtered(){
@@ -94,7 +94,7 @@ function filtered(){
     return matchesFilter&&matchesSearch;
   });
 }
-function sourceLabel(person){return person.on_roster&&person.from_form?'Roster + form':person.on_roster?'Planning roster':'Interest form'}
+function sourceLabel(person){return person.on_roster&&person.from_form?'Guest list + form':person.on_roster?'Guest list':'Interest form'}
 function render(){
   const list=filtered();status.textContent=`${list.length} ${list.length===1?'guest':'guests'}`;
   if(!list.length){rows.innerHTML='<tr><td colspan="5" class="empty">No matching guests.</td></tr>';cards.innerHTML='<div class="empty">No matching guests.</div>';return}
