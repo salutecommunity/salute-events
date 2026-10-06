@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>On the Table · Bay Area Dashboard</title>
-  <link rel="stylesheet" href="./dashboard.css?v=10">
+  <link rel="stylesheet" href="./dashboard.css?v=11">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -60,6 +60,7 @@
           <label>Email<input id="addEmail" type="email"></label>
           <label>Role<input id="addRole"></label>
           <label>Company<input id="addCompany"></label>
+          <label>Relationship to SALUTE<select id="addSaluteRelationship"><option value="">Not provided</option><option value="Yes">Member / attended</option><option value="Yes (Board)">Board member</option><option value="No">No prior relationship</option></select></label>
           <label>RSVP status<select id="addRsvpStatus"><option value="invited">Invited</option><option value="attending">Attending</option><option value="tentative">Tentative</option><option value="future_interest">Future interest</option><option value="declined">Declined</option></select></label>
           <div class="add-submit"><button class="primary" type="submit">Add person</button><p id="addGuestMessage" class="message" role="status"></p></div>
         </form>
@@ -75,7 +76,7 @@
       <p id="status" class="status" role="status">Loading guests…</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Guest</th><th>Role and company</th><th>RSVP status</th></tr></thead>
+          <thead><tr><th>Guest</th><th>Role and company</th><th>Relationship to SALUTE</th><th>RSVP status</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -83,6 +84,6 @@
     </section>
   </main>
 
-  <script type="module" src="./dashboard.js?v=10"></script>
+  <script type="module" src="./dashboard.js?v=11"></script>
 </body>
 </html>

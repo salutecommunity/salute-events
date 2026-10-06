@@ -15,6 +15,7 @@ const normName=(first,last)=>`${norm(first)} ${norm(last)}`.replace(/[^a-z0-9 ]/
 const responseLabel=value=>value==='can_attend_october_14'?'Can attend October 14':value==='future_interest'?'Interested in a future dinner':'No form response';
 const responseClass=value=>value==='can_attend_october_14'?'attend':value==='future_interest'?'future':'none';
 const rsvpLabel=value=>({invited:'Invited',attending:'Attending',tentative:'Tentative',future_interest:'Future interest',declined:'Declined'}[value]||'Invited');
+const relationshipLabel=value=>{const v=norm(value);if(v==='yes (board)')return 'Yes · Board';if(v==='yes'||v==='y')return 'Yes';if(v==='no'||v==='n')return 'No';return 'Not provided'};
 const rsvpOptions=value=>['invited','attending','tentative','future_interest','declined'].map(option=>`<option value="${option}"${option===value?' selected':''}>${rsvpLabel(option)}</option>`).join('');
 const safeLinkedIn=value=>{try{const u=new URL(value);return u.protocol==='https:'&&/(^|\.)linkedin\.com$/i.test(u.hostname)?u.href:null}catch{return null}};
 
@@ -90,22 +91,22 @@ function filtered(){
   const q=norm($('search').value);
   return people.filter(person=>{
     const matchesFilter=activeFilter==='all'||person.rsvp_status===activeFilter;
-    const matchesSearch=!q||[person.first_name,person.last_name,person.email,person.role,person.company].some(value=>norm(value).includes(q));
+    const matchesSearch=!q||[person.first_name,person.last_name,person.email,person.role,person.company,person.salute_relationship].some(value=>norm(value).includes(q));
     return matchesFilter&&matchesSearch;
   });
 }
 function sourceLabel(person){return person.on_roster&&person.from_form?'Guest list + form':person.on_roster?'Guest list':'Interest form'}
 function render(){
   const list=filtered();status.textContent=`${list.length} ${list.length===1?'guest':'guests'}`;
-  if(!list.length){rows.innerHTML='<tr><td colspan="3" class="empty">No matching guests.</td></tr>';cards.innerHTML='<div class="empty">No matching guests.</div>';return}
+  if(!list.length){rows.innerHTML='<tr><td colspan="4" class="empty">No matching guests.</td></tr>';cards.innerHTML='<div class="empty">No matching guests.</div>';return}
   rows.innerHTML=list.map(person=>{
     const linkedIn=safeLinkedIn(person.linkedin_url);
     const email=person.email?`<a href="mailto:${encodeURIComponent(person.email)}">${esc(person.email)}</a>`:'<span class="missing">Email not provided</span>';
-    return `<tr><td class="guest"><strong>${esc(person.first_name)} ${esc(person.last_name)}</strong>${email}${linkedIn?`<br><a href="${esc(linkedIn)}" target="_blank" rel="noopener">LinkedIn</a>`:''}${person.identity_note?`<span class="identity-note">${esc(person.identity_note)}</span>`:''}</td><td class="role"><strong>${esc(person.role||'—')}</strong><span>${esc(person.company||'—')}</span></td><td><select class="rsvp-select rsvp-${esc(person.rsvp_status)}" data-roster-id="${esc(person.roster_id||'')}" data-person-index="${people.indexOf(person)}" aria-label="RSVP status for ${esc(person.first_name)} ${esc(person.last_name)}">${rsvpOptions(person.rsvp_status)}</select></td></tr>`;
+    return `<tr><td class="guest"><strong>${esc(person.first_name)} ${esc(person.last_name)}</strong>${email}${linkedIn?`<br><a href="${esc(linkedIn)}" target="_blank" rel="noopener">LinkedIn</a>`:''}${person.identity_note?`<span class="identity-note">${esc(person.identity_note)}</span>`:''}</td><td class="role"><strong>${esc(person.role||'—')}</strong><span>${esc(person.company||'—')}</span></td><td class="relationship"><span>${esc(relationshipLabel(person.salute_relationship))}</span></td><td><select class="rsvp-select rsvp-${esc(person.rsvp_status)}" data-roster-id="${esc(person.roster_id||'')}" data-person-index="${people.indexOf(person)}" aria-label="RSVP status for ${esc(person.first_name)} ${esc(person.last_name)}">${rsvpOptions(person.rsvp_status)}</select></td></tr>`;
   }).join('');
   cards.innerHTML=list.map(person=>{
     const linkedIn=safeLinkedIn(person.linkedin_url);
-    return `<article class="card"><h3>${esc(person.first_name)} ${esc(person.last_name)}</h3><p class="meta">${esc(person.role||'Role not provided')}${person.company?` · ${esc(person.company)}`:''}</p><label class="card-status">RSVP status<select class="rsvp-select rsvp-${esc(person.rsvp_status)}" data-roster-id="${esc(person.roster_id||'')}" data-person-index="${people.indexOf(person)}">${rsvpOptions(person.rsvp_status)}</select></label><dl><dt>Email</dt><dd>${person.email?`<a href="mailto:${encodeURIComponent(person.email)}">${esc(person.email)}</a>`:'Not provided'}</dd>${linkedIn?`<dt>LinkedIn</dt><dd><a href="${esc(linkedIn)}" target="_blank" rel="noopener">View profile</a></dd>`:''}</dl></article>`;
+    return `<article class="card"><h3>${esc(person.first_name)} ${esc(person.last_name)}</h3><p class="meta">${esc(person.role||'Role not provided')}${person.company?` · ${esc(person.company)}`:''}</p><label class="card-status">RSVP status<select class="rsvp-select rsvp-${esc(person.rsvp_status)}" data-roster-id="${esc(person.roster_id||'')}" data-person-index="${people.indexOf(person)}">${rsvpOptions(person.rsvp_status)}</select></label><dl><dt>Email</dt><dd>${person.email?`<a href="mailto:${encodeURIComponent(person.email)}">${esc(person.email)}</a>`:'Not provided'}</dd>${linkedIn?`<dt>LinkedIn</dt><dd><a href="${esc(linkedIn)}" target="_blank" rel="noopener">View profile</a></dd>`:''}<dt>SALUTE relationship</dt><dd>${esc(relationshipLabel(person.salute_relationship))}</dd></dl></article>`;
   }).join('');
 }
 
@@ -134,14 +135,14 @@ async function addGuest(event){
   if(!firstName||!lastName){message.textContent='First and last name are required.';return}
   message.textContent='Adding…';
   const maxOrder=Math.max(0,...people.filter(item=>item.on_roster).map(item=>Number(item.display_order)||0));
-  const {error}=await db.from('salute_ott_bay_area_roster').insert({first_name:firstName,last_name:lastName,email:$('addEmail').value.trim()||null,role_title:$('addRole').value.trim()||null,company:$('addCompany').value.trim()||null,display_order:maxOrder+1,source:'dashboard_manual',rsvp_status:$('addRsvpStatus').value,status_updated_at:new Date().toISOString(),status_updated_by:currentUserEmail});
+  const {error}=await db.from('salute_ott_bay_area_roster').insert({first_name:firstName,last_name:lastName,email:$('addEmail').value.trim()||null,role_title:$('addRole').value.trim()||null,company:$('addCompany').value.trim()||null,salute_relationship:$('addSaluteRelationship').value||null,display_order:maxOrder+1,source:'dashboard_manual',rsvp_status:$('addRsvpStatus').value,status_updated_at:new Date().toISOString(),status_updated_by:currentUserEmail});
   if(error){message.textContent=error.code==='23505'?'A person with this name is already on the roster.':'This person could not be added. Please try again.';return}
   $('addGuestForm').reset();$('addGuestPanel').hidden=true;message.textContent='';await loadData();
 }
 
 function exportCsv(){
-  const header=['First name','Last name','Email','Role','Company','RSVP status','LinkedIn'];
-  const values=filtered().map(person=>[person.first_name,person.last_name,person.email,person.role,person.company,rsvpLabel(person.rsvp_status),person.linkedin_url]);
+  const header=['First name','Last name','Email','Role','Company','Relationship to SALUTE','RSVP status','LinkedIn'];
+  const values=filtered().map(person=>[person.first_name,person.last_name,person.email,person.role,person.company,relationshipLabel(person.salute_relationship),rsvpLabel(person.rsvp_status),person.linkedin_url]);
   const csv=[header,...values].map(row=>row.map(value=>`"${String(value??'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='on-the-table-bay-area-dashboard.csv';a.click();URL.revokeObjectURL(url);
 }
