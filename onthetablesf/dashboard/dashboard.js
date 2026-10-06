@@ -2,7 +2,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const SUPABASE_URL='https://iddzcbknnddkonrcwgpt.supabase.co';
 const PUBLISHABLE_KEY='sb_publishable_qYWrm4tJE1n80lJx7PFoEw_WCkcV1ZL';
-const ALLOWED_EMAILS=new Set(['skrothapalli@gmail.com','jaime.patel@gmail.com']);
+const ALLOWED_EMAILS=new Set(['skrothapalli@gmail.com','jaime.patel@gmail.com','hello@salute.community']);
 const db=createClient(SUPABASE_URL,PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const $=id=>document.getElementById(id);
 const loginView=$('loginView'),appView=$('appView'),authMessage=$('authMessage'),rows=$('rows'),cards=$('cards'),status=$('status');
