@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>Living with Art · Guest Dashboard</title>
-  <link rel="stylesheet" href="./dashboard.css?v=1">
+  <link rel="stylesheet" href="./dashboard.css?v=2">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -68,6 +68,22 @@
     </section>
   </main>
 
-  <script type="module" src="./dashboard.js?v=1"></script>
+  <dialog id="profileDialog" class="profile-dialog" aria-labelledby="profileName">
+    <div class="profile-panel">
+      <button id="closeProfile" class="profile-close" type="button" aria-label="Close guest profile">×</button>
+      <p class="eyebrow">Guest profile</p>
+      <h2 id="profileName"></h2>
+      <p id="profileRole" class="profile-role"></p>
+      <p id="profileBrief" class="profile-brief"></p>
+      <dl class="profile-details">
+        <div><dt>Email</dt><dd id="profileEmail"></dd></div>
+        <div><dt>Art-purchase stage</dt><dd id="profileStage"></dd></div>
+      </dl>
+      <div id="profileChoices" class="profile-choices"></div>
+      <p id="profileSource" class="profile-source"></p>
+    </div>
+  </dialog>
+
+  <script type="module" src="./dashboard.js?v=2"></script>
 </body>
 </html>
