@@ -56,7 +56,7 @@ function filtered(){
   const q=norm($('search').value);
   return guests.filter(guest=>{
     const matchesFilter=activeFilter==='all'||Boolean(guest[activeFilter]);
-    const matchesSearch=!q||[guest.full_name,guest.email,guest.job_title,guest.company,guest.brief,purchaseLabel(guest.purchase_intent)].some(value=>norm(value).includes(q));
+    const matchesSearch=!q||[guest.full_name,guest.email,guest.job_title,guest.company,guest.brief,guest.previous_roles,purchaseLabel(guest.purchase_intent)].some(value=>norm(value).includes(q));
     return matchesFilter&&matchesSearch;
   });
 }
@@ -100,6 +100,8 @@ function openProfile(guest){
   $('profileName').textContent=guest.full_name;
   $('profileRole').textContent=[guest.job_title,guest.company].filter(Boolean).join(' · ')||'Professional details not provided';
   $('profileBrief').textContent=guest.brief||fallbackBrief(guest);
+  const previousWrap=$('profilePreviousWrap');
+  if(guest.previous_roles){$('profilePrevious').textContent=guest.previous_roles;previousWrap.hidden=false}else{$('profilePrevious').textContent='';previousWrap.hidden=true}
   $('profileEmail').innerHTML=guest.email?`<a href="mailto:${encodeURIComponent(guest.email)}">${esc(guest.email)}</a>`:'Not provided';
   $('profileStage').textContent=purchaseLabel(guest.purchase_intent);
   profileChoices.innerHTML=`${checkbox(guest,'sit_near','Sit near')}${checkbox(guest,'of_interest','Of interest')}`;

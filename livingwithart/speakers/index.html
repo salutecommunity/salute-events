@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>Living with Art · Guest Dashboard</title>
-  <link rel="stylesheet" href="./dashboard.css?v=3">
+  <link rel="stylesheet" href="./dashboard.css?v=4">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -75,6 +75,10 @@
       <h2 id="profileName"></h2>
       <p id="profileRole" class="profile-role"></p>
       <p id="profileBrief" class="profile-brief"></p>
+      <div id="profilePreviousWrap" class="profile-previous" hidden>
+        <p class="eyebrow">Previous experience</p>
+        <p id="profilePrevious"></p>
+      </div>
       <dl class="profile-details">
         <div><dt>Email</dt><dd id="profileEmail"></dd></div>
         <div><dt>Art-purchase stage</dt><dd id="profileStage"></dd></div>
@@ -84,6 +88,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./dashboard.js?v=2"></script>
+  <script type="module" src="./dashboard.js?v=3"></script>
 </body>
 </html>
