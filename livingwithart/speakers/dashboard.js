@@ -2,7 +2,8 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const SUPABASE_URL='https://iddzcbknnddkonrcwgpt.supabase.co';
 const PUBLISHABLE_KEY='sb_publishable_qYWrm4tJE1n80lJx7PFoEw_WCkcV1ZL';
-const ALLOWED_EMAILS=new Set(['kinjil.mathur@gmail.com','melissa@mjosephstudio.com','ispadder@gmail.com','hello@salute.community']);
+const ALLOWED_EMAILS=new Set(['kinjil.mathur@gmail.com','melissa@mjosephstudio.com','melissa.joseph@gmail.com','ispadder@gmail.com','hello@salute.community']);
+const LOGIN_ALIASES={'melissa.joseph@gmail.com':'melissa@mjosephstudio.com'};
 const db=createClient(SUPABASE_URL,PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const $=id=>document.getElementById(id);
 const loginView=$('loginView'),appView=$('appView'),authMessage=$('authMessage'),rows=$('rows'),cards=$('cards'),status=$('status');
@@ -19,7 +20,8 @@ $('loginForm').addEventListener('submit',async event=>{
   authMessage.textContent='Opening dashboard…';
   const email=norm($('email').value),password=$('accessCode').value;
   if(!ALLOWED_EMAILS.has(email)){authMessage.textContent='This email is not approved for this dashboard.';return}
-  const {data,error}=await db.auth.signInWithPassword({email,password});
+  const authEmail=LOGIN_ALIASES[email]||email;
+  const {data,error}=await db.auth.signInWithPassword({email:authEmail,password});
   const user=data?.user;
   if(error||!user||!ALLOWED_EMAILS.has(norm(user.email))){
     await db.auth.signOut();authMessage.textContent='The email or access code is incorrect.';return;
