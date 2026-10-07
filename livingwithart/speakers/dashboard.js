@@ -9,8 +9,15 @@ const $=id=>document.getElementById(id);
 const loginView=$('loginView'),appView=$('appView'),authMessage=$('authMessage'),rows=$('rows'),cards=$('cards'),status=$('status');
 const profileDialog=$('profileDialog'),profileChoices=$('profileChoices');
 let guests=[];
+let adminSelectionRows=[];
 let activeFilter='all';
 let currentUserId='';
+let currentEmail='';
+const SPEAKERS=[
+  {name:'Kinjil Mathur',email:'kinjil.mathur@gmail.com'},
+  {name:'Melissa Joseph',email:'melissa@mjosephstudio.com'},
+  {name:'Sadaf Padder',email:'ispadder@gmail.com'}
+];
 const esc=value=>String(value??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
 const norm=value=>String(value??'').trim().toLowerCase();
 const purchaseLabel=value=>({actively_looking:'Actively looking',within_one_year:'Within one year',beginning_to_explore:'Beginning to explore',not_at_this_time:'Not at this time'}[value]||'Not provided');
@@ -43,8 +50,9 @@ document.querySelectorAll('.filter').forEach(button=>button.addEventListener('cl
   render();
 }));
 
-function showLogin(){currentUserId='';loginView.hidden=false;appView.hidden=true;$('accessCode').value=''}
-function showApp(user){currentUserId=user.id;loginView.hidden=true;appView.hidden=false;$('userEmail').textContent=user.email}
+function isAdmin(){return currentEmail==='hello@salute.community'}
+function showLogin(){currentUserId='';currentEmail='';adminSelectionRows=[];loginView.hidden=false;appView.hidden=true;$('accessCode').value=''}
+function showApp(user){currentUserId=user.id;currentEmail=norm(user.email);loginView.hidden=true;appView.hidden=false;$('userEmail').textContent=user.email;$('adminSelections').hidden=!isAdmin();document.querySelector('.privacy-note').textContent=isAdmin()?'Read-only SALUTE view of all speaker selections.':'Your selections are private to you and save automatically.'}
 
 async function loadGuests(){
   status.textContent='Loading guests…';
@@ -52,6 +60,25 @@ async function loadGuests(){
   if(error){status.textContent='We could not load the guest dashboard. Please sign out and try again.';return}
   guests=(data??[]).map(item=>({...item,sit_near:Boolean(item.sit_near),of_interest:Boolean(item.of_interest)}));
   render();
+  if(isAdmin())await loadAdminSelections();
+}
+
+async function loadAdminSelections(){
+  const {data,error}=await db.rpc('get_living_with_art_admin_selection_summary');
+  if(error){$('adminSelectionCards').innerHTML='<p class="empty">Speaker selections could not be loaded.</p>';return}
+  adminSelectionRows=data??[];
+  renderAdminSelections();
+  renderStats();
+}
+
+function renderAdminSelections(){
+  $('adminSelectionCards').innerHTML=SPEAKERS.map(speaker=>{
+    const selections=adminSelectionRows.filter(row=>norm(row.reviewer_email)===speaker.email);
+    const sitCount=selections.filter(row=>row.sit_near).length;
+    const interestCount=selections.filter(row=>row.of_interest).length;
+    const list=selections.length?`<ul>${selections.map(row=>`<li><strong>${esc(row.guest_name)}</strong><span>${row.sit_near?'<em>Sit near</em>':''}${row.of_interest?'<em>Of interest</em>':''}</span></li>`).join('')}</ul>`:'<p class="no-selections">No selections saved yet.</p>';
+    return `<article class="admin-selection-card"><div class="admin-speaker"><div><h3>${esc(speaker.name)}</h3><p>${esc(speaker.email)}</p></div><div class="admin-counts"><span>${sitCount} sit near</span><span>${interestCount} of interest</span></div></div>${list}</article>`;
+  }).join('');
 }
 
 function filtered(){
@@ -64,11 +91,13 @@ function filtered(){
 }
 
 function renderStats(){
-  const sitNear=guests.filter(g=>g.sit_near).length,interest=guests.filter(g=>g.of_interest).length;
-  $('stats').innerHTML=`<div class="stat"><strong>${guests.length}</strong><span>Confirmed guests</span></div><div class="stat"><strong>${sitNear}</strong><span>Selected to sit near</span></div><div class="stat"><strong>${interest}</strong><span>Marked of interest</span></div>`;
+  const sitNear=isAdmin()?adminSelectionRows.filter(row=>row.sit_near).length:guests.filter(g=>g.sit_near).length;
+  const interest=isAdmin()?adminSelectionRows.filter(row=>row.of_interest).length:guests.filter(g=>g.of_interest).length;
+  $('stats').innerHTML=`<div class="stat"><strong>${guests.length}</strong><span>Confirmed guests</span></div><div class="stat"><strong>${sitNear}</strong><span>${isAdmin()?'Speaker sit-near selections':'Selected to sit near'}</span></div><div class="stat"><strong>${interest}</strong><span>${isAdmin()?'Speaker interest selections':'Marked of interest'}</span></div>`;
 }
 
 function checkbox(guest,field,label){
+  if(isAdmin())return '<span class="readonly-mark">Read only</span>';
   return `<label class="choice"><input type="checkbox" data-id="${esc(guest.guest_response_id)}" data-field="${field}"${guest[field]?' checked':''}><span aria-hidden="true"></span><em>${label}</em></label>`;
 }
 

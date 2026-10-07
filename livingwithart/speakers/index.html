@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src 'self' https://iddzcbknnddkonrcwgpt.supabase.co; base-uri 'none'; frame-ancestors 'none'; form-action 'self'">
   <title>Living with Art · Guest Dashboard</title>
-  <link rel="stylesheet" href="./dashboard.css?v=4">
+  <link rel="stylesheet" href="./dashboard.css?v=5">
 </head>
 <body>
   <main id="loginView" class="login-shell">
@@ -46,6 +46,14 @@
     </section>
 
     <section id="stats" class="stats" aria-label="Guest and selection totals"></section>
+
+    <section id="adminSelections" class="admin-selections" hidden>
+      <div class="admin-head">
+        <div><p class="eyebrow">SALUTE admin view</p><h2>Speaker selections</h2></div>
+        <p>Read-only overview of each speaker’s saved seating preferences.</p>
+      </div>
+      <div id="adminSelectionCards" class="admin-selection-cards"></div>
+    </section>
 
     <section class="list-section">
       <div class="list-head">
@@ -88,6 +96,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./dashboard.js?v=4"></script>
+  <script type="module" src="./dashboard.js?v=5"></script>
 </body>
 </html>
