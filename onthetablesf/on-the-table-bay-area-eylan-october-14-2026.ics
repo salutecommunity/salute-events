@@ -1,0 +1,38 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//SALUTE//On the Table Bay Area at Eylan//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:SALUTE On the Table: Bay Area
+BEGIN:VTIMEZONE
+TZID:America/Los_Angeles
+X-LIC-LOCATION:America/Los_Angeles
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+TZNAME:PDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+TZNAME:PST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:on-the-table-bay-area-eylan-20261014-v2@salute.community
+DTSTAMP:20261009T183500Z
+DTSTART;TZID=America/Los_Angeles:20261014T180000
+DTEND;TZID=America/Los_Angeles:20261014T203000
+SUMMARY:SALUTE On the Table: Bay Area
+LOCATION:Eylan\, 500 El Camino Real\, Menlo Park\, CA 94025
+DESCRIPTION:An intimate SALUTE dinner where the menu is the agenda. Each course introduces a new theme and prompts shaped around the people in the room. Hosted by Sheela Krothapalli and Jaime Patel. Please contact hello@salute.community if your plans change.
+URL:https://www.eylanrestaurant.com/
+ORGANIZER;CN=SALUTE:mailto:hello@salute.community
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
