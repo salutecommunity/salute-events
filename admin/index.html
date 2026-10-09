@@ -35,6 +35,7 @@
       <button class="admin-tab active" type="button" data-view="events">Event responses</button>
       <button class="admin-tab" type="button" data-view="art-interest">Future Interest — Art Experience</button>
       <button class="admin-tab" type="button" data-view="on-the-table">Future Interest — On the Table</button>
+      <button class="admin-tab" type="button" data-view="support">Support inquiries</button>
     </nav>
 
     <section id="eventDashboard" class="dashboard">
@@ -124,6 +125,22 @@
         </table>
       </div>
     </section>
+
+    <section id="supportDashboard" class="dashboard" hidden>
+      <div class="title-row">
+        <div><p class="eyebrow">Get Involved</p><h1>Support inquiries</h1></div>
+        <div class="toolbar"><button id="exportSupportCsv" class="outline" type="button">Export CSV</button></div>
+      </div>
+      <div id="supportStats" class="stats art-stats" aria-label="Support inquiry totals"></div>
+      <div class="filters art-filters"><input id="supportSearch" type="search" placeholder="Search name, email, organization or interest" aria-label="Search support inquiries"></div>
+      <div id="supportStatus" class="status" role="status">Loading inquiries…</div>
+      <div class="table-wrap">
+        <table class="art-interest-table">
+          <thead><tr><th>Contact</th><th>Organization</th><th>Interest</th><th>Submitted</th><th></th></tr></thead>
+          <tbody id="supportRows"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <dialog id="artInterestDialog">
@@ -134,6 +151,11 @@
   <dialog id="onTableInterestDialog">
     <div class="dialog-head"><div><p class="eyebrow">Future Interest — On the Table</p><h2 id="onTableInterestDetailName"></h2></div><button id="closeOnTableInterestDetail" aria-label="Close">×</button></div>
     <div id="onTableInterestDetailBody" class="detail-body"></div>
+  </dialog>
+
+  <dialog id="supportDialog">
+    <div class="dialog-head"><div><p class="eyebrow">Support inquiry</p><h2 id="supportDetailName"></h2></div><button id="closeSupportDetail" aria-label="Close">×</button></div>
+    <div id="supportDetailBody" class="detail-body"></div>
   </dialog>
 
   <dialog id="manualRegistrationDialog">
@@ -168,6 +190,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="./admin-v4.js?v=10"></script>
+  <script type="module" src="./admin-v4.js?v=11"></script>
 </body>
 </html>
