@@ -26,7 +26,7 @@ $('loginForm').addEventListener('submit',async event=>{
   if(!ALLOWED_EMAILS.has(email)){authMessage.textContent='This email is not approved for this page.';return}
   const {data,error}=await db.auth.signInWithPassword({email,password});
   const user=data?.user;
-  if(error||!user||!ALLOWED_EMAILS.has(norm(user.email))||user.user_metadata?.access_scope!=='ott_bay_area'){
+  if(error||!user||!ALLOWED_EMAILS.has(norm(user.email))){
     await db.auth.signOut();authMessage.textContent='The email or access code is incorrect.';return;
   }
   authMessage.textContent='';showApp(user);await loadGuests();
@@ -43,7 +43,7 @@ document.querySelectorAll('.filter').forEach(button=>button.addEventListener('cl
 
 function isAdmin(){return currentEmail==='hello@salute.community'}
 function showLogin(){currentUserId='';currentEmail='';adminSelectionRows=[];loginView.hidden=false;appView.hidden=true;$('accessCode').value=''}
-function showApp(user){currentUserId=user.id;currentEmail=norm(user.email);loginView.hidden=true;appView.hidden=false;$('userEmail').textContent=user.email;$('adminSelections').hidden=!isAdmin();document.querySelector('.privacy-note').innerHTML=isAdmin()?'Read-only SALUTE view of Sheela and Jaime’s selections.':'Use <strong>Sit near</strong> for table placement and <strong>Would like to meet</strong> for an introduction during the evening. Choices save automatically.'}
+function showApp(user){currentUserId=user.id;currentEmail=norm(user.email);loginView.hidden=true;appView.hidden=false;$('userEmail').textContent=user.email;$('adminSelections').hidden=!isAdmin();document.querySelector('.privacy-note').innerHTML=isAdmin()?'Review each host’s choices above, then use <strong>Sit near</strong> and <strong>Would like to meet</strong> below to add SALUTE’s own priorities. Choices save automatically.':'Use <strong>Sit near</strong> for table placement and <strong>Would like to meet</strong> for an introduction during the evening. Choices save automatically.'}
 
 async function loadGuests(){
   status.textContent='Loading guests…';
@@ -82,13 +82,12 @@ function filtered(){
 }
 
 function renderStats(){
-  const sitNear=isAdmin()?adminSelectionRows.filter(row=>row.sit_near).length:guests.filter(g=>g.sit_near).length;
-  const interest=isAdmin()?adminSelectionRows.filter(row=>row.of_interest).length:guests.filter(g=>g.of_interest).length;
-  $('stats').innerHTML=`<div class="stat"><strong>${guests.length}</strong><span>Attending guests</span></div><div class="stat"><strong>${sitNear}</strong><span>${isAdmin()?'Host sit-near selections':'Selected to sit near'}</span></div><div class="stat"><strong>${interest}</strong><span>${isAdmin()?'Host meet selections':'Would like to meet'}</span></div>`;
+  const sitNear=guests.filter(g=>g.sit_near).length;
+  const interest=guests.filter(g=>g.of_interest).length;
+  $('stats').innerHTML=`<div class="stat"><strong>${guests.length}</strong><span>Attending guests</span></div><div class="stat"><strong>${sitNear}</strong><span>${isAdmin()?'SALUTE sit-near selections':'Selected to sit near'}</span></div><div class="stat"><strong>${interest}</strong><span>${isAdmin()?'SALUTE meet selections':'Would like to meet'}</span></div>`;
 }
 
 function checkbox(guest,field,label){
-  if(isAdmin())return '<span class="readonly-mark">Read only</span>';
   return `<label class="choice"><input type="checkbox" data-id="${esc(guest.guest_roster_id)}" data-field="${field}"${guest[field]?' checked':''}><span aria-hidden="true"></span><em>${label}</em></label>`;
 }
 
@@ -108,7 +107,7 @@ function render(){
 
 async function handleSelection(event){
   const input=event.target.closest('input[type="checkbox"][data-id]');
-  if(!input||isAdmin())return;
+  if(!input)return;
   const guest=guests.find(item=>item.guest_roster_id===input.dataset.id);
   if(!guest)return;
   const field=input.dataset.field,previous=guest[field];
@@ -123,7 +122,7 @@ async function start(){
   const {data:{session}}=await db.auth.getSession();
   if(!session){showLogin();return}
   const user=session.user,email=norm(user.email);
-  if(!ALLOWED_EMAILS.has(email)||user.user_metadata?.access_scope!=='ott_bay_area'){await db.auth.signOut();showLogin();return}
+  if(!ALLOWED_EMAILS.has(email)){await db.auth.signOut();showLogin();return}
   showApp(user);await loadGuests();
 }
 
