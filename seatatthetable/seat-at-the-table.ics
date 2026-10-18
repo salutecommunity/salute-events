@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//SALUTE//Seat at the Table//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:seatatthetable-20261101@salute.community
+DTSTAMP:20261018T200000Z
+DTSTART:20261101T190000Z
+SUMMARY:SALUTE | Seat at the Table — Virtual Screening
+DESCRIPTION:Complimentary virtual screening with SALUTE. Your viewing lin
+ k will be emailed before the screening. Questions: hello@salute.communit
+ y
+LOCATION:Online — viewing link to follow by email
+URL:https://events.salute.community/seatatthetable/
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
