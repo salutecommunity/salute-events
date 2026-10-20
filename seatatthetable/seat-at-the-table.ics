@@ -5,10 +5,11 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
 UID:seatatthetable-20261101@salute.community
-DTSTAMP:20261020T140000Z
-SEQUENCE:1
+DTSTAMP:20261020T224500Z
+SEQUENCE:2
 DTSTART:20261101T190000Z
-SUMMARY:SALUTE | Seat at the Table — Virtual Screening
+SUMMARY:Seat at the Table Screening | Hosted by SALUTE & South Asian Trai
+ lblazers
 DESCRIPTION:Complimentary virtual screening with SALUTE and South Asian Tr
  ailblazers. Watch here: https://streamyard.com/watch/YTb6zjgCqfh5 Questio
  ns: hello@salute.community
