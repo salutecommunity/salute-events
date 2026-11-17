@@ -67,62 +67,33 @@
 
     @media(max-width:1000px){.hero,.format,.invitation{grid-template-columns:1fr}.hero-copy{border-right:0;border-bottom:1px solid var(--line);min-height:580px}.hero-art{min-height:520px}.manifesto{grid-template-columns:80px 1fr}.manifesto-side{padding:3rem 1.2rem}.manifesto-main{padding:5rem 2rem}.manifesto-note{grid-template-columns:1fr}.format-intro{min-height:420px}.invite-copy{border-right:0;border-bottom:1px solid rgba(255,255,255,.24)}.invite-panel{padding:5rem 2rem}}
     @media(max-width:520px){.top{padding:0 1rem}.top-center{display:none}.access-strip{grid-template-columns:1fr;gap:.35rem;padding:.9rem 1rem}.edition{display:none}.hero-copy{min-height:auto;padding:3rem 1.2rem 2.5rem}.hero-title{margin:0 0 2.25rem}.series-name{font-size:.76rem}.event-name{font-size:19vw}.hero-intro{margin-left:0}.hero-art{min-height:440px;padding:3rem 1.2rem 5rem}.stamp{width:78px;height:78px;right:1rem;top:1rem}.clock-meta{flex-direction:column;gap:.35rem}.manifesto{grid-template-columns:52px 1fr}.manifesto-side{padding:2.5rem .8rem}.manifesto-main{padding:3.5rem 1.2rem}.format-intro,.format-courses{padding:3.5rem 1.2rem}.movement{grid-template-columns:1fr;gap:.6rem}.invite-copy,.invite-panel{padding:4rem 1.2rem}.details{grid-template-columns:1fr}.detail{border-bottom:1px solid rgba(255,255,255,.24);padding-bottom:1rem}.field-row{grid-template-columns:1fr;gap:0}footer{flex-direction:column;align-items:flex-start;padding:2rem 1.2rem}}
+    .lead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+    .lead-copy{padding:4.5vw 4vw 4vw;border-right:1px solid var(--line)}
+    .lead-copy .hero-title{margin:0 0 1.6rem}.lead-copy .event-name{font-size:clamp(3.6rem,6.4vw,6.6rem)}
+    .lead-intro{font:400 1.08rem/1.5 var(--serif);max-width:520px;margin:0 0 1.6rem}
+    .facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 0 2.4rem}.fact{padding:.9rem .8rem .9rem 0}.fact small{display:block;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--mute);margin-bottom:.45rem}.fact b{font:400 1rem/1.35 var(--serif)}
+    .lead-copy .guest-policy{color:var(--mute);border-left-color:var(--line);margin-top:1.6rem!important}
+    .photo{position:relative;margin:0;background:var(--ink);min-height:640px;overflow:hidden}.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block}
+    .photo::after{content:'';position:absolute;inset:auto 0 0 0;height:45%;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+    .photo-cap{position:absolute;left:2.2rem;right:2.2rem;bottom:2rem;z-index:1;color:#fff;display:flex;justify-content:space-between;align-items:flex-end;gap:1rem}.photo-cap .clock{font-size:clamp(4.5rem,8vw,8rem)}.photo-cap span{font:400 .6rem/1.5 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-align:right}
+    .credit{position:absolute;top:1rem;right:1.2rem;z-index:1;font-size:.5rem;letter-spacing:.06em;color:rgba(255,255,255,.7)}.credit a{color:inherit}
+    .agenda{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}.agenda .movement{display:block;padding:2rem 3vw;border:0;border-right:1px solid var(--line)}.agenda .movement:last-child{border-right:0}.agenda .movement small{display:block;padding:0 0 .8rem}.agenda .movement h3{font-size:1.5rem}
+    @media(max-width:1000px){.lead{grid-template-columns:1fr}.lead-copy{border-right:0}.photo{min-height:420px;order:-1}.agenda{grid-template-columns:1fr 1fr}.agenda .movement:nth-child(2){border-right:0}.agenda .movement{border-bottom:1px solid var(--line)}}
+    @media(max-width:520px){.lead-copy{padding:2.4rem 1.2rem}.lead-copy .event-name{font-size:17vw}.facts{grid-template-columns:1fr}.fact{border-bottom:1px solid var(--line)}.fact:last-child{border-bottom:0}.photo{min-height:300px}.photo-cap{left:1.2rem;right:1.2rem;bottom:1.2rem}.agenda{grid-template-columns:1fr}.agenda .movement{border-right:0;padding:1.6rem 1.2rem}}
   </style>
 </head>
 <body>
 <div class="page">
   <header class="top"><img class="logo" src="../livingwithart/assets/salute-logo.png" alt="SALUTE"><span class="top-center">A private invitation</span><span>November 20 · New York</span></header>
-  <div class="access-strip"><strong>Friday, November 20 · 3:00 p.m. ET</strong><span>SALUTE requests the pleasure of your company at Nasdaq MarketSite as we ring the Closing Bell.</span></div>
+  <div class="access-strip" hidden><strong>Friday, November 20 · 3:00 p.m. ET</strong><span>SALUTE requests the pleasure of your company at Nasdaq MarketSite as we ring the Closing Bell.</span></div>
 
   <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="edition"><span>November 20 / New York</span><span>By invitation only</span></div>
-        <div class="hero-title"><span class="series-name">SALUTE at Nasdaq</span><span class="event-name">The Closing</span><span class="event-name event-indent"><em>Bell.</em></span></div>
-        <div class="hero-intro"><p>A milestone for our community, shared with the people who helped build it.</p><a class="hero-response" href="#register">Register</a></div>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="stamp">Private<br>invitation</div>
-        <p class="clock">4:00</p>
-        <div class="clock-meta"><span>P.M. ET / Market close</span><span>Nasdaq MarketSite / Times Square</span></div>
-        <div class="ticker"><div class="ticker-track"><span>SALUTE</span><span>·</span><span>South Asian Leaders Unite to Empower</span><span>·</span><span>The Closing Bell</span><span>·</span><span>November 20, 2026</span><span>·</span><span>Nasdaq MarketSite</span><span>·</span><span>SALUTE</span><span>·</span><span>South Asian Leaders Unite to Empower</span><span>·</span><span>The Closing Bell</span><span>·</span><span>November 20, 2026</span><span>·</span><span>Nasdaq MarketSite</span><span>·</span></div></div>
-      </div>
-    </section>
-
-    <section class="manifesto">
-      <div class="manifesto-side"><span class="index">02</span><span class="vertical-note">The moment</span></div>
-      <div class="manifesto-main">
-        <span class="heading-kicker">The Moment</span>
-        <p class="statement">A shared moment for <em>our community</em>, at the close of the market.</p>
-        <div class="manifesto-note"><p>Friday, November 20, 2026</p><p>Join SALUTE at Nasdaq MarketSite as we ring the Closing Bell, a meaningful milestone for our community and a special way to begin the day of our inaugural S.SUITE Honors.</p></div>
-      </div>
-    </section>
-
-    <section class="format">
-      <div class="format-intro"><span class="index">03 / The afternoon</span><div><span class="heading-kicker">The Afternoon</span><h2>Before<br>the <em>bell.</em></h2><p>Space is limited, and advance registration is required.</p><p>Registered guests will receive security check-in instructions and a digital entry pass from Nasdaq the day before.</p></div></div>
-      <div class="format-courses">
-        <div class="movement"><small>3:00 p.m.</small><div><h3>Arrival</h3><p>Please arrive at 3:00 p.m. for security check-in and the event briefing. Have your Nasdaq digital entry pass ready.</p></div></div>
-        <div class="movement highlight"><small>4:00 p.m.</small><div><h3>The Closing Bell</h3><p>SALUTE rings the Closing Bell at Nasdaq MarketSite.</p></div></div>
-        <div class="movement"><small>Following</small><div><h3>Group photographs</h3><p>Photographs follow the ceremony. The event is expected to conclude by 4:30 p.m.</p></div></div>
-        <div class="movement"><small>Location</small><div><h3>Nasdaq MarketSite</h3><p>151 West 43rd Street, Times Square, New York, NY</p></div></div>
-      </div>
-    </section>
-
-    <section class="invitation" id="register">
-      <div class="invite-copy">
-        <span class="index">04 / November 20</span>
-        <div>
-          <h2>We hope you’ll join us.</h2>
-          <p>Please register by completing the form. Your details will be shared with Nasdaq for security check-in.</p>
-          <p class="guest-policy">This invitation is personal and non-transferable, and is for the Nasdaq Closing Bell ceremony only. Please keep the details confidential as we coordinate the announcement with Nasdaq.</p>
-          <div class="details"><div class="detail"><small>When</small><b>Friday, November 20, 2026<br>Arrive 3:00 p.m. ET</b></div><div class="detail"><small>Where</small><b>Nasdaq MarketSite<br>151 West 43rd Street</b></div></div>
-        </div>
-      </div>
-      <div class="invite-panel">
+    <section class="lead" id="register">
+      <div class="lead-copy">
+        <div class="hero-title"><span class="series-name">SALUTE at Nasdaq</span><span class="event-name">The Closing <em>Bell.</em></span></div>
+        <p class="lead-intro">Join SALUTE at Nasdaq MarketSite as we ring the Closing Bell on the day of our inaugural S.SUITE Honors. Space is limited and registration is required.</p>
+        <div class="facts"><div class="fact"><small>When</small><b>Friday, Nov 20<br>Arrive 3:00 p.m. ET</b></div><div class="fact"><small>Where</small><b>Nasdaq MarketSite<br>151 West 43rd St</b></div><div class="fact"><small>Bell</small><b>4:00 p.m.<br>Done by 4:30</b></div></div>
         <div id="formWrap">
-          <span class="index">Registration</span>
-          <h3>Kindly register.</h3>
-          <p class="panel-intro">Please share your details as they should appear on the Nasdaq guest list.</p>
           <form id="regForm" novalidate>
             <div class="field-row">
               <div class="field"><label for="firstName">First name <span class="req">*</span></label><input type="text" id="firstName" name="firstName" autocomplete="given-name" maxlength="100" required></div>
@@ -142,7 +113,20 @@
           </form>
         </div>
         <div class="success" id="success" aria-live="polite"><div class="success-mark">✓</div><h3>Thank you.</h3><p class="panel-intro">Your registration has been received. Nasdaq will send security check-in instructions and your digital entry pass the day before. We look forward to seeing you on November 20.</p></div>
+        <p class="guest-policy">This invitation is personal and non-transferable, and is for the Nasdaq Closing Bell ceremony only. Please keep the details confidential as we coordinate the announcement with Nasdaq.</p>
       </div>
+      <figure class="photo">
+        <img src="assets/nasdaq-marketsite.jpg" alt="The Nasdaq MarketSite studio in Times Square, New York">
+        <figcaption class="credit">Photo: Luca Marfè, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noreferrer">CC BY 2.0</a></figcaption>
+        <div class="photo-cap"><p class="clock">4:00</p><span>P.M. ET<br>Market close</span></div>
+      </figure>
+    </section>
+
+    <section class="agenda" aria-label="The afternoon">
+      <div class="movement"><small>3:00 p.m.</small><h3>Arrival</h3><p>Security check-in and event briefing. Have your Nasdaq digital entry pass ready.</p></div>
+      <div class="movement highlight"><small>4:00 p.m.</small><h3>The Closing Bell</h3><p>SALUTE rings the Closing Bell at Nasdaq MarketSite.</p></div>
+      <div class="movement"><small>Following</small><h3>Photographs</h3><p>Group photographs follow. We expect to conclude by 4:30 p.m.</p></div>
+      <div class="movement"><small>The day before</small><h3>Your entry pass</h3><p>Nasdaq will send security check-in instructions and a digital entry pass.</p></div>
     </section>
   </main>
 
