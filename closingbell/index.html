@@ -78,6 +78,11 @@
     .photo-cap{position:absolute;left:2.2rem;right:2.2rem;bottom:2rem;z-index:1;color:#fff;display:flex;justify-content:space-between;align-items:flex-end;gap:1rem}.photo-cap .clock{font-size:clamp(4.5rem,8vw,8rem)}.photo-cap span{font:400 .6rem/1.5 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-align:right}
     .credit{position:absolute;top:1rem;right:1.2rem;z-index:1;font-size:.5rem;letter-spacing:.06em;color:rgba(255,255,255,.7)}.credit a{color:inherit}
     .agenda{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}.agenda .movement{display:block;padding:2rem 3vw;border:0;border-right:1px solid var(--line)}.agenda .movement:last-child{border-right:0}.agenda .movement small{display:block;padding:0 0 .8rem}.agenda .movement h3{font-size:1.5rem}
+    .photo::before{content:'';position:absolute;inset:0;z-index:1;background:rgba(10,10,12,.38)}
+    .photo-brand{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;color:#fff;text-align:center;padding:2rem}
+    .photo-brand img{position:static;width:min(62%,420px);height:auto;filter:invert(1) drop-shadow(0 4px 24px rgba(0,0,0,.45))}
+    .photo-brand span{font:400 .66rem/1.5 var(--sans);letter-spacing:.2em;text-transform:uppercase}
+    .credit{z-index:3}
     @media(max-width:1000px){.lead{grid-template-columns:1fr}.lead-copy{border-right:0}.photo{min-height:420px;order:-1}.agenda{grid-template-columns:1fr 1fr}.agenda .movement:nth-child(2){border-right:0}.agenda .movement{border-bottom:1px solid var(--line)}}
     @media(max-width:520px){.lead-copy{padding:2.4rem 1.2rem}.lead-copy .event-name{font-size:17vw}.facts{grid-template-columns:1fr}.fact{border-bottom:1px solid var(--line)}.fact:last-child{border-bottom:0}.photo{min-height:300px}.photo-cap{left:1.2rem;right:1.2rem;bottom:1.2rem}.agenda{grid-template-columns:1fr}.agenda .movement{border-right:0;padding:1.6rem 1.2rem}}
   </style>
@@ -85,14 +90,14 @@
 <body>
 <div class="page">
   <header class="top"><img class="logo" src="../livingwithart/assets/salute-logo.png" alt="SALUTE"><span class="top-center">A private invitation</span><span>November 20 · New York</span></header>
-  <div class="access-strip" hidden><strong>Friday, November 20 · 3:00 p.m. ET</strong><span>SALUTE requests the pleasure of your company at Nasdaq MarketSite as we ring the Closing Bell.</span></div>
+  <div class="access-strip" hidden><strong>Friday, November 20 · 3:00 – 4:30 p.m. ET</strong><span>SALUTE requests the pleasure of your company at Nasdaq MarketSite as we ring the Closing Bell.</span></div>
 
   <main>
     <section class="lead" id="register">
       <div class="lead-copy">
         <div class="hero-title"><span class="series-name">SALUTE at Nasdaq</span><span class="event-name">The Closing <em>Bell.</em></span></div>
         <p class="lead-intro">Join SALUTE at Nasdaq MarketSite as we ring the Closing Bell on the day of our inaugural S.SUITE Honors. Space is limited and registration is required.</p>
-        <div class="facts"><div class="fact"><small>When</small><b>Friday, Nov 20<br>Arrive 3:00 p.m. ET</b></div><div class="fact"><small>Where</small><b>Nasdaq MarketSite<br>151 West 43rd St</b></div><div class="fact"><small>Bell</small><b>4:00 p.m.<br>Done by 4:30</b></div></div>
+        <div class="facts"><div class="fact"><small>When</small><b>Friday, Nov 20<br>3:00 – 4:30 p.m. ET</b></div><div class="fact"><small>Where</small><b>Nasdaq MarketSite<br>151 West 43rd St</b></div><div class="fact"><small>Closing Bell</small><b>Rings at<br>4:00 p.m. ET</b></div></div>
         <div id="formWrap">
           <form id="regForm" novalidate>
             <div class="field-row">
@@ -118,7 +123,7 @@
       <figure class="photo">
         <img src="assets/nasdaq-marketsite.jpg" alt="The Nasdaq MarketSite studio in Times Square, New York">
         <figcaption class="credit">Photo: Luca Marfè, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noreferrer">CC BY 2.0</a></figcaption>
-        <div class="photo-cap"><p class="clock">4:00</p><span>P.M. ET<br>Market close</span></div>
+        <div class="photo-brand"><img src="../livingwithart/assets/salute-logo.png" alt="SALUTE"><span>at the Nasdaq Closing Bell · November 20</span></div>
       </figure>
     </section>
 
